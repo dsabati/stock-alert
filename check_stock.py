@@ -249,17 +249,16 @@ def send_email(changes: list[tuple[ProductResult, bool, bool]]) -> None:
     message["To"] = recipient
     message.set_content(build_email_body(changes))
 
-    smtp: smtplib.SMTP | smtplib.SMTP_SSL
     if use_ssl:
-        smtp = smtplib.SMTP_SSL(smtp_host, smtp_port)
+        with smtplib.SMTP_SSL(smtp_host, smtp_port) as smtp:
+            smtp.login(smtp_username, smtp_password)
+            smtp.send_message(message)
     else:
-        smtp = smtplib.SMTP(smtp_host, smtp_port)
-
-    with smtp:
-        if not use_ssl and use_tls:
-            smtp.starttls()
-        smtp.login(smtp_username, smtp_password)
-        smtp.send_message(message)
+        with smtplib.SMTP(smtp_host, smtp_port) as smtp:
+            if use_tls:
+                smtp.starttls()
+            smtp.login(smtp_username, smtp_password)
+            smtp.send_message(message)
 
 
 def main() -> int:
