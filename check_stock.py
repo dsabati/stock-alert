@@ -113,6 +113,13 @@ class ProductResult:
     details: str
 
 
+@dataclass
+class StatusChange:
+    result: ProductResult
+    previous_in_stock: bool
+    current_in_stock: bool
+
+
 def normalize_text(value: str) -> str:
     return " ".join(value.lower().split())
 
@@ -200,15 +207,16 @@ def fetch_product_status(session: requests.Session, product: dict[str, Any]) -> 
     return detect_stock_status(page_text, product)
 
 
-def build_email_body(changes: list[tuple[ProductResult, bool, bool]]) -> str:
+def build_email_body(changes: list[StatusChange]) -> str:
     lines = ["Stock status changed:", ""]
-    for result, previous_status, current_status in changes:
+    for change in changes:
+        result = change.result
         lines.extend(
             [
                 f"- {result.name}",
                 f"  Retailer: {result.retailer}",
-                f"  Previous status: {'in stock' if previous_status else 'out of stock'}",
-                f"  Current status: {'in stock' if current_status else 'out of stock'}",
+                f"  Previous status: {'in stock' if change.previous_in_stock else 'out of stock'}",
+                f"  Current status: {'in stock' if change.current_in_stock else 'out of stock'}",
                 f"  Detection details: {result.details}",
                 f"  URL: {result.url}",
                 "",
@@ -217,7 +225,7 @@ def build_email_body(changes: list[tuple[ProductResult, bool, bool]]) -> str:
     return "\n".join(lines).strip()
 
 
-def send_email(changes: list[tuple[ProductResult, bool, bool]]) -> None:
+def send_email(changes: list[StatusChange]) -> None:
     smtp_host = os.getenv("SMTP_HOST")
     smtp_port = int(os.getenv("SMTP_PORT", "587"))
     smtp_username = os.getenv("SMTP_USERNAME")
@@ -265,7 +273,7 @@ def main() -> int:
     products = load_products()
     previous_state = load_state()
     next_state = dict(previous_state)
-    changes: list[tuple[ProductResult, bool, bool]] = []
+    changes: list[StatusChange] = []
     errors: list[str] = []
     determined_statuses = 0
 
@@ -297,14 +305,21 @@ def main() -> int:
             )
 
             if previous_status is not None and previous_status != result.in_stock:
-                changes.append((result, previous_status, result.in_stock))
+                changes.append(
+                    StatusChange(
+                        result=result,
+                        previous_in_stock=previous_status,
+                        current_in_stock=result.in_stock,
+                    )
+                )
 
             next_state[result.name] = current_entry
 
     if determined_statuses == 0:
+        details = f" Errors: {'; '.join(errors)}" if errors else ""
         raise RuntimeError(
             "No product status could be determined. "
-            "All product checks either failed or returned inconclusive results."
+            f"All product checks either failed or returned inconclusive results.{details}"
         )
 
     if changes:
