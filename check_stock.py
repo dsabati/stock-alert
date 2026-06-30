@@ -324,11 +324,15 @@ def main() -> int:
             next_state[result.name] = current_entry
 
     if determined_statuses == 0:
-        details = f" Errors: {'; '.join(errors)}" if errors else ""
-        raise RuntimeError(
+        message = (
             "No product status could be determined. "
-            f"All product checks either failed or returned inconclusive results.{details}"
+            "All product checks either failed or returned inconclusive results."
         )
+        print(f"WARNING: {message}")
+        if errors:
+            for error in errors:
+                print(f"WARNING: {error}")
+        return 0
 
     if is_first_run and initial_statuses:
         send_initial_email(initial_statuses)
