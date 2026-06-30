@@ -225,7 +225,7 @@ def send_email(changes: list[tuple[ProductResult, bool, bool]]) -> None:
     sender = os.getenv("ALERT_FROM_EMAIL")
     recipient = os.getenv("ALERT_TO_EMAIL")
     use_ssl = os.getenv("SMTP_USE_SSL", "").lower() == "true"
-    use_tls = os.getenv("SMTP_USE_TLS", "true").lower() != "false"
+    use_tls = os.getenv("SMTP_USE_TLS", "true").lower() == "true"
 
     required = {
         "SMTP_HOST": smtp_host,
