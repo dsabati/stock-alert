@@ -37,11 +37,7 @@ jobs:
 
       - name: Commit updated state
         run: |
-          if [ ! -f state.json ]; then
-            echo "state.json was not created."
-            exit 0
-          fi
-          if git diff --quiet -- state.json; then
+          if ! git status --porcelain -- state.json | grep -q .; then
             echo "No state change to commit."
             exit 0
           fi
