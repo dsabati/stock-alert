@@ -17,6 +17,7 @@ USER_AGENT = (
     "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 "
     "(KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36"
 )
+PRODUCT_SEARCH_QUERY = "midea portasplit"
 STATE_FILE = Path(os.getenv("STATE_FILE", "state.json"))
 REQUEST_TIMEOUT = int(os.getenv("REQUEST_TIMEOUT", "30"))
 
@@ -30,7 +31,7 @@ DEFAULT_PRODUCTS: list[dict[str, Any]] = [
     {
         "name": "Midea PortaSplit - Amazon",
         "retailer": "Amazon",
-        "url": retailer_search_url("https://www.amazon.fr/s?k={query}", "midea portasplit"),
+        "url": retailer_search_url("https://www.amazon.fr/s?k={query}", PRODUCT_SEARCH_QUERY),
         "expected_keywords": ["midea", "portasplit"],
         "in_stock_keywords": [
             "ajouter au panier",
@@ -48,7 +49,7 @@ DEFAULT_PRODUCTS: list[dict[str, Any]] = [
         "retailer": "Castorama",
         "url": retailer_search_url(
             "https://www.castorama.fr/recherche?term={query}",
-            "midea portasplit",
+            PRODUCT_SEARCH_QUERY,
         ),
         "expected_keywords": ["midea", "portasplit"],
         "in_stock_keywords": [
@@ -67,7 +68,7 @@ DEFAULT_PRODUCTS: list[dict[str, Any]] = [
         "retailer": "Darty",
         "url": retailer_search_url(
             "https://www.darty.com/nav/recherche?text={query}",
-            "midea portasplit",
+            PRODUCT_SEARCH_QUERY,
         ),
         "expected_keywords": ["midea", "portasplit"],
         "in_stock_keywords": [
@@ -86,7 +87,7 @@ DEFAULT_PRODUCTS: list[dict[str, Any]] = [
         "retailer": "Leroy Merlin",
         "url": retailer_search_url(
             "https://www.leroymerlin.fr/recherche/?q={query}",
-            "midea portasplit",
+            PRODUCT_SEARCH_QUERY,
         ),
         "expected_keywords": ["midea", "portasplit"],
         "in_stock_keywords": [
@@ -271,10 +272,11 @@ def main() -> int:
 
     with requests.Session() as session:
         for product in products:
+            product_name = str(product.get("name", product.get("url", "unknown product")))
             try:
                 result = fetch_product_status(session, product)
-            except Exception as error:  # noqa: BLE001
-                errors.append(f"{product['name']}: {error}")
+            except (requests.RequestException, ValueError, TypeError, KeyError) as error:
+                errors.append(f"{product_name}: {error}")
                 continue
 
             print(f"{result.name}: {result.in_stock} ({result.details})")
@@ -301,7 +303,10 @@ def main() -> int:
             next_state[result.name] = current_entry
 
     if determined_statuses == 0:
-        raise RuntimeError("No product status could be determined.")
+        raise RuntimeError(
+            "No product status could be determined. "
+            "All product checks either failed or returned inconclusive results."
+        )
 
     if changes:
         send_email(changes)
