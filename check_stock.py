@@ -7,7 +7,6 @@ from dataclasses import dataclass
 from email.message import EmailMessage
 from pathlib import Path
 from typing import Any
-from urllib.parse import quote_plus
 
 import requests
 from bs4 import BeautifulSoup
@@ -17,91 +16,10 @@ USER_AGENT = (
     "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 "
     "(KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36"
 )
-PRODUCT_SEARCH_QUERY = "midea portasplit"
 STATE_FILE = Path(os.getenv("STATE_FILE", "state.json"))
 REQUEST_TIMEOUT = int(os.getenv("REQUEST_TIMEOUT", "30"))
-
-
-def retailer_search_url(base_url: str, query: str) -> str:
-    encoded_query = quote_plus(query)
-    return base_url.format(query=encoded_query)
-
-
-DEFAULT_PRODUCTS: list[dict[str, Any]] = [
-    {
-        "name": "Midea PortaSplit - Amazon",
-        "retailer": "Amazon",
-        "url": retailer_search_url("https://www.amazon.fr/s?k={query}", PRODUCT_SEARCH_QUERY),
-        "expected_keywords": ["midea", "portasplit"],
-        "in_stock_keywords": [
-            "ajouter au panier",
-            "acheter maintenant",
-            "livraison gratuite",
-        ],
-        "out_of_stock_keywords": [
-            "actuellement indisponible",
-            "temporairement en rupture de stock",
-            "nous ne savons pas quand cet article sera de nouveau approvisionné",
-        ],
-    },
-    {
-        "name": "Midea PortaSplit - Castorama",
-        "retailer": "Castorama",
-        "url": retailer_search_url(
-            "https://www.castorama.fr/recherche?term={query}",
-            PRODUCT_SEARCH_QUERY,
-        ),
-        "expected_keywords": ["midea", "portasplit"],
-        "in_stock_keywords": [
-            "ajouter au panier",
-            "disponible",
-            "livraison",
-        ],
-        "out_of_stock_keywords": [
-            "indisponible",
-            "rupture de stock",
-            "plus disponible",
-        ],
-    },
-    {
-        "name": "Midea PortaSplit - Darty",
-        "retailer": "Darty",
-        "url": retailer_search_url(
-            "https://www.darty.com/nav/recherche?text={query}",
-            PRODUCT_SEARCH_QUERY,
-        ),
-        "expected_keywords": ["midea", "portasplit"],
-        "in_stock_keywords": [
-            "ajouter au panier",
-            "retirer en magasin",
-            "livraison",
-        ],
-        "out_of_stock_keywords": [
-            "indisponible",
-            "rupture de stock",
-            "temporairement indisponible",
-        ],
-    },
-    {
-        "name": "Midea PortaSplit - Leroy Merlin",
-        "retailer": "Leroy Merlin",
-        "url": retailer_search_url(
-            "https://www.leroymerlin.fr/recherche/?q={query}",
-            PRODUCT_SEARCH_QUERY,
-        ),
-        "expected_keywords": ["midea", "portasplit"],
-        "in_stock_keywords": [
-            "ajouter au panier",
-            "disponible",
-            "livraison",
-        ],
-        "out_of_stock_keywords": [
-            "indisponible",
-            "rupture de stock",
-            "non disponible",
-        ],
-    },
-]
+STATE_PRODUCTS_KEY = "products"
+STATE_INITIALIZED_KEY = "initialized"
 
 
 @dataclass
@@ -120,6 +38,11 @@ class StatusChange:
     current_in_stock: bool
 
 
+@dataclass
+class InitialStatus:
+    result: ProductResult
+
+
 def normalize_text(value: str) -> str:
     return " ".join(value.lower().split())
 
@@ -127,28 +50,80 @@ def normalize_text(value: str) -> str:
 def load_products() -> list[dict[str, Any]]:
     raw_products = os.getenv("STOCK_PRODUCTS")
     if not raw_products:
-        return DEFAULT_PRODUCTS
+        raise RuntimeError(
+            "STOCK_PRODUCTS is required and must define exact product page URLs."
+        )
 
     products = json.loads(raw_products)
     if not isinstance(products, list) or not products:
         raise ValueError("STOCK_PRODUCTS must be a non-empty JSON array")
 
-    return products
+    normalized_products: list[dict[str, Any]] = []
+    for idx, product in enumerate(products, start=1):
+        if not isinstance(product, dict):
+            raise ValueError(f"STOCK_PRODUCTS[{idx}] must be a JSON object")
+
+        missing = [key for key in ("name", "retailer", "url") if not product.get(key)]
+        if missing:
+            raise ValueError(
+                f"STOCK_PRODUCTS[{idx}] is missing required fields: {', '.join(missing)}"
+            )
+
+        normalized_products.append(
+            {
+                "name": str(product["name"]),
+                "retailer": str(product["retailer"]),
+                "url": str(product["url"]),
+                "expected_keywords": list(product.get("expected_keywords", [])),
+                "in_stock_keywords": list(product.get("in_stock_keywords", [])),
+                "out_of_stock_keywords": list(product.get("out_of_stock_keywords", [])),
+            }
+        )
+
+    return normalized_products
 
 
 def load_state() -> dict[str, dict[str, Any]]:
     if not STATE_FILE.exists():
-        return {}
+        return {STATE_INITIALIZED_KEY: False, STATE_PRODUCTS_KEY: {}}
 
     with STATE_FILE.open("r", encoding="utf-8") as state_file:
         data = json.load(state_file)
-        return data if isinstance(data, dict) else {}
+        if not isinstance(data, dict):
+            return {STATE_INITIALIZED_KEY: False, STATE_PRODUCTS_KEY: {}}
+
+        # Backward compatibility for the previous state format (flat product map).
+        if STATE_PRODUCTS_KEY not in data:
+            products = {
+                key: value
+                for key, value in data.items()
+                if isinstance(key, str) and isinstance(value, dict)
+            }
+            return {
+                STATE_INITIALIZED_KEY: bool(products),
+                STATE_PRODUCTS_KEY: products,
+            }
+
+        products = data.get(STATE_PRODUCTS_KEY)
+        initialized = data.get(STATE_INITIALIZED_KEY)
+        return {
+            STATE_INITIALIZED_KEY: bool(initialized),
+            STATE_PRODUCTS_KEY: products if isinstance(products, dict) else {},
+        }
 
 
-def save_state(state: dict[str, dict[str, Any]]) -> None:
+def save_state(state: dict[str, dict[str, Any]], initialized: bool = True) -> None:
     STATE_FILE.parent.mkdir(parents=True, exist_ok=True)
     STATE_FILE.write_text(
-        json.dumps(state, indent=2, sort_keys=True) + "\n",
+        json.dumps(
+            {
+                STATE_INITIALIZED_KEY: initialized,
+                STATE_PRODUCTS_KEY: state,
+            },
+            indent=2,
+            sort_keys=True,
+        )
+        + "\n",
         encoding="utf-8",
     )
 
@@ -225,7 +200,24 @@ def build_email_body(changes: list[StatusChange]) -> str:
     return "\n".join(lines).strip()
 
 
-def send_email(changes: list[StatusChange]) -> None:
+def build_initial_email_body(statuses: list[InitialStatus]) -> str:
+    lines = ["Initial stock status:", ""]
+    for status in statuses:
+        result = status.result
+        lines.extend(
+            [
+                f"- {result.name}",
+                f"  Retailer: {result.retailer}",
+                f"  Current status: {'in stock' if result.in_stock else 'out of stock'}",
+                f"  Detection details: {result.details}",
+                f"  URL: {result.url}",
+                "",
+            ]
+        )
+    return "\n".join(lines).strip()
+
+
+def send_email_message(subject: str, body: str) -> None:
     smtp_host = os.getenv("SMTP_HOST")
     smtp_port = int(os.getenv("SMTP_PORT", "587"))
     smtp_username = os.getenv("SMTP_USERNAME")
@@ -250,12 +242,10 @@ def send_email(changes: list[StatusChange]) -> None:
         )
 
     message = EmailMessage()
-    message["Subject"] = (
-        f"{os.getenv('EMAIL_SUBJECT_PREFIX', 'Stock alert')}: {len(changes)} status change(s)"
-    )
+    message["Subject"] = subject
     message["From"] = sender
     message["To"] = recipient
-    message.set_content(build_email_body(changes))
+    message.set_content(body)
 
     if use_ssl:
         with smtplib.SMTP_SSL(smtp_host, smtp_port) as smtp:
@@ -269,11 +259,27 @@ def send_email(changes: list[StatusChange]) -> None:
             smtp.send_message(message)
 
 
+def send_email(changes: list[StatusChange]) -> None:
+    subject = f"{os.getenv('EMAIL_SUBJECT_PREFIX', 'Stock alert')}: {len(changes)} status change(s)"
+    send_email_message(subject=subject, body=build_email_body(changes))
+
+
+def send_initial_email(statuses: list[InitialStatus]) -> None:
+    subject = (
+        f"{os.getenv('EMAIL_SUBJECT_PREFIX', 'Stock alert')}: "
+        f"initial status for {len(statuses)} product(s)"
+    )
+    send_email_message(subject=subject, body=build_initial_email_body(statuses))
+
+
 def main() -> int:
     products = load_products()
-    previous_state = load_state()
+    state_data = load_state()
+    previous_state = state_data[STATE_PRODUCTS_KEY]
+    is_first_run = not bool(state_data[STATE_INITIALIZED_KEY])
     next_state = dict(previous_state)
     changes: list[StatusChange] = []
+    initial_statuses: list[InitialStatus] = []
     errors: list[str] = []
     determined_statuses = 0
 
@@ -312,6 +318,8 @@ def main() -> int:
                         current_in_stock=result.in_stock,
                     )
                 )
+            elif is_first_run:
+                initial_statuses.append(InitialStatus(result=result))
 
             next_state[result.name] = current_entry
 
@@ -322,11 +330,13 @@ def main() -> int:
             f"All product checks either failed or returned inconclusive results.{details}"
         )
 
-    if changes:
+    if is_first_run and initial_statuses:
+        send_initial_email(initial_statuses)
+    elif changes:
         send_email(changes)
 
-    if next_state != previous_state:
-        save_state(next_state)
+    if next_state != previous_state or is_first_run:
+        save_state(next_state, initialized=True)
 
     if errors:
         for error in errors:

@@ -14,10 +14,10 @@ jobs:
 
     steps:
       - name: Check out repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Set up Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v6
         with:
           python-version: "3.12"
 
@@ -32,6 +32,7 @@ jobs:
           SMTP_PASSWORD: ${{ secrets.SMTP_PASSWORD }}
           ALERT_FROM_EMAIL: ${{ secrets.ALERT_FROM_EMAIL }}
           ALERT_TO_EMAIL: ${{ secrets.ALERT_TO_EMAIL }}
+          STOCK_PRODUCTS: ${{ secrets.STOCK_PRODUCTS }}
           EMAIL_SUBJECT_PREFIX: Midea PortaSplit
         run: python check_stock.py
 
