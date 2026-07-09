@@ -414,10 +414,11 @@ def send_email_message(subject: str, body: str) -> None:
     }
     missing = [name for name, value in required.items() if not value]
     if missing:
-        raise RuntimeError(
-            "Cannot send a stock alert email because the following environment variables "
-            f"are missing: {', '.join(missing)}"
+        print(
+            "WARNING: Cannot send stock alert email because the following environment "
+            f"variables are missing: {', '.join(missing)}"
         )
+        return
 
     message = EmailMessage()
     message["Subject"] = subject
@@ -425,16 +426,22 @@ def send_email_message(subject: str, body: str) -> None:
     message["To"] = recipient
     message.set_content(body)
 
-    if use_ssl:
-        with smtplib.SMTP_SSL(smtp_host, smtp_port) as smtp:
-            smtp.login(smtp_username, smtp_password)
-            smtp.send_message(message)
-    else:
-        with smtplib.SMTP(smtp_host, smtp_port) as smtp:
-            if use_tls:
-                smtp.starttls()
-            smtp.login(smtp_username, smtp_password)
-            smtp.send_message(message)
+    try:
+        if use_ssl:
+            with smtplib.SMTP_SSL(smtp_host, smtp_port) as smtp:
+                smtp.login(smtp_username, smtp_password)
+                smtp.send_message(message)
+        else:
+            with smtplib.SMTP(smtp_host, smtp_port) as smtp:
+                if use_tls:
+                    smtp.starttls()
+                smtp.login(smtp_username, smtp_password)
+                smtp.send_message(message)
+    except (smtplib.SMTPException, OSError) as error:
+        print(
+            "WARNING: Failed to send stock alert email. "
+            f"Check SMTP_* settings and server availability. Error: {error}"
+        )
 
 
 def send_email(changes: list[StatusChange]) -> None:
