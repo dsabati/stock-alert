@@ -595,17 +595,39 @@ def send_recovery_email() -> None:
     send_notification_message(subject=subject, body=body)
 
 
-def send_webhook_message(subject: str, body: str) -> bool:
-    raw_urls = os.getenv("NOTIFICATION_WEBHOOK_URLS", "")
+def parse_notification_webhook_urls(raw_urls: str | None = None) -> list[str]:
+    source = raw_urls if raw_urls is not None else os.getenv("NOTIFICATION_WEBHOOK_URLS", "")
     urls: list[str] = []
-    if raw_urls.strip():
-        for chunk in raw_urls.replace("\n", ",").split(","):
+    if source.strip():
+        for chunk in source.replace("\n", ",").split(","):
             candidate = chunk.strip()
             if candidate:
                 urls.append(candidate)
 
     # Preserve order while removing duplicates.
-    unique_urls = list(dict.fromkeys(urls))
+    return list(dict.fromkeys(urls))
+
+
+def anonymize_webhook_url(url: str) -> str:
+    parsed = urlparse(url)
+    if not parsed.scheme or not parsed.netloc:
+        return "invalid-webhook-url"
+    return f"{parsed.scheme}://{parsed.netloc}/***"
+
+
+def log_configured_notification_webhooks() -> None:
+    webhook_urls = parse_notification_webhook_urls()
+    if not webhook_urls:
+        print("Notification webhooks: none configured")
+        return
+
+    print("Notification webhooks configured (anonymized):")
+    for index, webhook_url in enumerate(webhook_urls, start=1):
+        print(f"- [{index}] {anonymize_webhook_url(webhook_url)}")
+
+
+def send_webhook_message(subject: str, body: str) -> bool:
+    unique_urls = parse_notification_webhook_urls()
     if not unique_urls:
         return False
 
@@ -680,6 +702,7 @@ def send_initial_email(statuses: list[InitialStatus]) -> None:
 
 
 def main() -> int:
+    log_configured_notification_webhooks()
     products = load_products()
     state_data = load_state()
     previous_state = state_data[STATE_PRODUCTS_KEY]
