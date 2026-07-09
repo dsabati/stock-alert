@@ -29,15 +29,9 @@ jobs:
 
       - name: Check stock
         env:
-          NOTIFICATION_WEBHOOK_URL: ${{ secrets.NOTIFICATION_WEBHOOK_URL || vars.NOTIFICATION_WEBHOOK_URL }}
+          NOTIFICATION_WEBHOOK_URLS: ${{ secrets.NOTIFICATION_WEBHOOK_URLS || vars.NOTIFICATION_WEBHOOK_URLS }}
           NOTIFICATION_WEBHOOK_TIMEOUT: ${{ vars.NOTIFICATION_WEBHOOK_TIMEOUT || '15' }}
           NOTIFICATION_DEBUG: ${{ vars.NOTIFICATION_DEBUG || 'false' }}
-          SMTP_HOST: ${{ secrets.SMTP_HOST }}
-          SMTP_PORT: ${{ secrets.SMTP_PORT }}
-          SMTP_USERNAME: ${{ secrets.SMTP_USERNAME }}
-          SMTP_PASSWORD: ${{ secrets.SMTP_PASSWORD }}
-          ALERT_FROM_EMAIL: ${{ secrets.ALERT_FROM_EMAIL }}
-          ALERT_TO_EMAIL: ${{ secrets.ALERT_TO_EMAIL }}
           STOCK_PRODUCTS: ${{ secrets.STOCK_PRODUCTS || vars.STOCK_PRODUCTS }}
           EMAIL_SUBJECT_PREFIX: ClimRadar 75018
         run: |

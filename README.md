@@ -1,52 +1,51 @@
 # stock-alert
 
-Stock monitor script that checks exact product page URLs and sends email alerts when stock status changes.
+Stock monitor script that checks exact product page URLs and sends webhook alerts when stock status changes.
 
 The script includes dedicated parsing for ClimRadar pages (for example `https://climradar.fr/?cp=75018`) and treats `en stock` / `stock faible` as available and `rupture` as unavailable.
-
-## Required secrets
-
-- `SMTP_HOST`
-- `SMTP_PORT`
-- `SMTP_USERNAME`
-- `SMTP_PASSWORD`
-- `ALERT_FROM_EMAIL`
-- `ALERT_TO_EMAIL`
 
 ## Optional environment variables
 
 - `STOCK_PRODUCTS`: required JSON array with exact product page URLs
 - `EMAIL_SUBJECT_PREFIX`: email subject prefix, defaults to `Stock alert`
-- `NOTIFICATION_WEBHOOK_URL`: optional HTTP webhook endpoint for notifications (Slack/Discord/ntfy/custom)
+- `NOTIFICATION_WEBHOOK_URLS`: optional list of webhook URLs (comma-separated or newline-separated)
 - `NOTIFICATION_WEBHOOK_TIMEOUT`: webhook timeout in seconds, defaults to `15`
 - `NOTIFICATION_DEBUG`: if `true`, prints webhook send attempts and HTTP status in script logs, defaults to `false`
 - `WEBHOOK_DEBUG_PROBE`: if `true` in GitHub Actions variables, runs an explicit webhook probe step, defaults to `false`
-- `ALERT_ON_INCONCLUSIVE`: send an email when no product status can be determined in a run, defaults to `true`
-- `ALERT_ON_INCONCLUSIVE_EVERY_RUN`: if `true`, send inconclusive email every run (can be noisy), defaults to `false`
-- `ALERT_ON_RECOVERY`: send an email when checks recover from inconclusive to determined, defaults to `false`
 
-By default, inconclusive alerts are deduplicated: one email is sent when checks first become inconclusive, then suppressed on repeated inconclusive runs until recovery.
+Notifications are webhook-only. Configure one or more webhook URLs to receive alerts.
 
-If `NOTIFICATION_WEBHOOK_URL` is set, the script sends notifications to that webhook without using SMTP. If both webhook and SMTP are configured, it attempts both channels.
+Example with multiple webhooks:
+
+```env
+NOTIFICATION_WEBHOOK_URLS=https://ntfy.sh/my-topic/json,https://hooks.slack.com/services/T000/B000/XXX
+```
+
+You can also use newlines:
+
+```env
+NOTIFICATION_WEBHOOK_URLS=https://ntfy.sh/my-topic/json
+https://discord.com/api/webhooks/123/token
+```
 
 ## Webhook notification examples (no SMTP)
 
 Slack incoming webhook:
 
 ```env
-NOTIFICATION_WEBHOOK_URL=https://hooks.slack.com/services/T00000000/B00000000/XXXXXXXXXXXXXXXXXXXXXXXX
+NOTIFICATION_WEBHOOK_URLS=https://hooks.slack.com/services/T00000000/B00000000/XXXXXXXXXXXXXXXXXXXXXXXX
 ```
 
 Discord webhook:
 
 ```env
-NOTIFICATION_WEBHOOK_URL=https://discord.com/api/webhooks/123456789012345678/your_token
+NOTIFICATION_WEBHOOK_URLS=https://discord.com/api/webhooks/123456789012345678/your_token
 ```
 
 ntfy topic (requires `/json`):
 
 ```env
-NOTIFICATION_WEBHOOK_URL=https://ntfy.sh/your-topic/json
+NOTIFICATION_WEBHOOK_URLS=https://ntfy.sh/your-topic/json
 ```
 
 ## Local configuration

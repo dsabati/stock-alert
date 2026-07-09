@@ -3,10 +3,8 @@ from __future__ import annotations
 import json
 import os
 import re
-import smtplib
 import unicodedata
 from dataclasses import dataclass
-from email.message import EmailMessage
 from pathlib import Path
 from typing import Any
 from urllib.parse import urlparse
@@ -588,23 +586,31 @@ def send_inconclusive_email(
         errors=errors,
         previous_inconclusive=previous_inconclusive,
     )
-    send_email_message(subject=subject, body=body)
+    send_notification_message(subject=subject, body=body)
 
 
 def send_recovery_email() -> None:
     subject = f"{os.getenv('EMAIL_SUBJECT_PREFIX', 'Stock alert')}: stock check recovered"
     body = "Stock check recovered: at least one product status was determined in this run."
-    send_email_message(subject=subject, body=body)
+    send_notification_message(subject=subject, body=body)
 
 
 def send_webhook_message(subject: str, body: str) -> bool:
-    webhook_url = os.getenv("NOTIFICATION_WEBHOOK_URL")
-    if not webhook_url:
+    raw_urls = os.getenv("NOTIFICATION_WEBHOOK_URLS", "")
+    urls: list[str] = []
+    if raw_urls.strip():
+        for chunk in raw_urls.replace("\n", ",").split(","):
+            candidate = chunk.strip()
+            if candidate:
+                urls.append(candidate)
+
+    # Preserve order while removing duplicates.
+    unique_urls = list(dict.fromkeys(urls))
+    if not unique_urls:
         return False
 
     timeout = int(os.getenv("NOTIFICATION_WEBHOOK_TIMEOUT", "15"))
     debug_webhook = os.getenv("NOTIFICATION_DEBUG", "false").lower() == "true"
-    webhook_host = (urlparse(webhook_url).hostname or "unknown-host").lower()
     payload = {
         "subject": subject,
         "message": body,
@@ -614,101 +620,55 @@ def send_webhook_message(subject: str, body: str) -> bool:
     headers = {
         "Content-Type": "application/json",
     }
-
-    if debug_webhook:
-        print(
-            "INFO: Webhook notification attempt "
-            f"host={webhook_host} subject={subject} timeout={timeout}s"
-        )
-
-    try:
-        response = requests.post(
-            webhook_url,
-            json=payload,
-            headers=headers,
-            timeout=timeout,
-        )
-        response.raise_for_status()
+    sent_any = False
+    for webhook_url in unique_urls:
+        webhook_host = (urlparse(webhook_url).hostname or "unknown-host").lower()
         if debug_webhook:
-            print(f"INFO: Webhook notification sent successfully (status={response.status_code})")
-        return True
-    except requests.RequestException as error:
-        print(
-            "WARNING: Failed to send webhook notification. "
-            "Check NOTIFICATION_WEBHOOK_URL and endpoint availability. "
-            f"Host={webhook_host}. Error: {error}"
-        )
-        return False
-
-
-def send_email_message(subject: str, body: str) -> None:
-    webhook_sent = send_webhook_message(subject=subject, body=body)
-
-    smtp_host = os.getenv("SMTP_HOST")
-    smtp_port = int(os.getenv("SMTP_PORT", "587"))
-    smtp_username = os.getenv("SMTP_USERNAME")
-    smtp_password = os.getenv("SMTP_PASSWORD")
-    sender = os.getenv("ALERT_FROM_EMAIL")
-    recipient = os.getenv("ALERT_TO_EMAIL")
-    use_ssl = os.getenv("SMTP_USE_SSL", "").lower() == "true"
-    use_tls = os.getenv("SMTP_USE_TLS", "true").lower() == "true"
-
-    required = {
-        "SMTP_HOST": smtp_host,
-        "SMTP_USERNAME": smtp_username,
-        "SMTP_PASSWORD": smtp_password,
-        "ALERT_FROM_EMAIL": sender,
-        "ALERT_TO_EMAIL": recipient,
-    }
-
-    if not smtp_host:
-        if not webhook_sent:
             print(
-                "WARNING: No notification channel configured. "
-                "Set SMTP_* + ALERT_* variables or NOTIFICATION_WEBHOOK_URL."
+                "INFO: Webhook notification attempt "
+                f"host={webhook_host} subject={subject} timeout={timeout}s"
             )
-        return
 
-    missing = [name for name, value in required.items() if not value]
-    if missing:
+        try:
+            response = requests.post(
+                webhook_url,
+                json=payload,
+                headers=headers,
+                timeout=timeout,
+            )
+            response.raise_for_status()
+            sent_any = True
+            if debug_webhook:
+                print(
+                    "INFO: Webhook notification sent successfully "
+                    f"host={webhook_host} status={response.status_code}"
+                )
+        except requests.RequestException as error:
+            print(
+                "WARNING: Failed to send webhook notification. "
+                "Check NOTIFICATION_WEBHOOK_URLS and endpoint availability. "
+                f"Host={webhook_host}. Error: {error}"
+            )
+
+    return sent_any
+
+
+def send_notification_message(subject: str, body: str) -> None:
+    if not send_webhook_message(subject=subject, body=body):
         print(
-            "WARNING: SMTP is configured but missing required environment "
-            f"variables are missing: {', '.join(missing)}"
-        )
-        return
-
-    message = EmailMessage()
-    message["Subject"] = subject
-    message["From"] = sender
-    message["To"] = recipient
-    message.set_content(body)
-
-    try:
-        if use_ssl:
-            with smtplib.SMTP_SSL(smtp_host, smtp_port) as smtp:
-                smtp.login(smtp_username, smtp_password)
-                smtp.send_message(message)
-        else:
-            with smtplib.SMTP(smtp_host, smtp_port) as smtp:
-                if use_tls:
-                    smtp.starttls()
-                smtp.login(smtp_username, smtp_password)
-                smtp.send_message(message)
-    except (smtplib.SMTPException, OSError) as error:
-        print(
-            "WARNING: Failed to send stock alert email. "
-            f"Check SMTP_* settings and server availability. Error: {error}"
+            "WARNING: No webhook notification sent. "
+            "Set NOTIFICATION_WEBHOOK_URLS to enable alerts."
         )
 
 
 def send_email(changes: list[StatusChange]) -> None:
     subject = f"{os.getenv('EMAIL_SUBJECT_PREFIX', 'Stock alert')}: {len(changes)} status change(s)"
-    send_email_message(subject=subject, body=build_email_body(changes))
+    send_notification_message(subject=subject, body=build_email_body(changes))
 
 
 def send_restock_email(events: list[RestockEvent]) -> None:
     subject = f"{os.getenv('EMAIL_SUBJECT_PREFIX', 'Stock alert')}: {len(events)} restock(s) detected"
-    send_email_message(subject=subject, body=build_restock_email_body(events))
+    send_notification_message(subject=subject, body=build_restock_email_body(events))
 
 
 def send_initial_email(statuses: list[InitialStatus]) -> None:
@@ -716,7 +676,7 @@ def send_initial_email(statuses: list[InitialStatus]) -> None:
         f"{os.getenv('EMAIL_SUBJECT_PREFIX', 'Stock alert')}: "
         f"initial status for {len(statuses)} product(s)"
     )
-    send_email_message(subject=subject, body=build_initial_email_body(statuses))
+    send_notification_message(subject=subject, body=build_initial_email_body(statuses))
 
 
 def main() -> int:

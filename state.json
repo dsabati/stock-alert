@@ -7,6 +7,13 @@
     "Midea PortaSplit - Paris 75018": {
       "online": [
         {
+          "is_available": true,
+          "key": "manomano en ligne|manomano.fr",
+          "name": "ManoMano en ligne",
+          "price": "899\u202f\u20ac",
+          "website": "manomano.fr"
+        },
+        {
           "is_available": false,
           "key": "amazon en ligne|amazon.fr",
           "name": "Amazon en ligne",
@@ -38,7 +45,7 @@
           "is_available": false,
           "key": "fnac en ligne|fnac.com",
           "name": "Fnac en ligne",
-          "price": "990\u202f\u20ac",
+          "price": null,
           "website": "fnac.com"
         },
         {
@@ -54,13 +61,6 @@
           "name": "Leroy Merlin en ligne",
           "price": "999\u202f\u20ac",
           "website": "leroymerlin.fr"
-        },
-        {
-          "is_available": false,
-          "key": "manomano en ligne|manomano.fr",
-          "name": "ManoMano en ligne",
-          "price": null,
-          "website": "manomano.fr"
         },
         {
           "is_available": false,
@@ -857,7 +857,7 @@
         }
       ],
       "retailer": "ClimRadar",
-      "summary_in_stock": false,
+      "summary_in_stock": true,
       "url": "https://climradar.fr/?cp=75018&r=200&p=portasplit%2Cportasplit-cool"
     }
   }
