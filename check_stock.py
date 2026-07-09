@@ -395,7 +395,42 @@ def send_recovery_email() -> None:
     send_email_message(subject=subject, body=body)
 
 
+def send_webhook_message(subject: str, body: str) -> bool:
+    webhook_url = os.getenv("NOTIFICATION_WEBHOOK_URL")
+    if not webhook_url:
+        return False
+
+    timeout = int(os.getenv("NOTIFICATION_WEBHOOK_TIMEOUT", "15"))
+    payload = {
+        "subject": subject,
+        "message": body,
+        "text": f"{subject}\n\n{body}",
+        "content": f"{subject}\n\n{body}",
+    }
+    headers = {
+        "Content-Type": "application/json",
+    }
+
+    try:
+        response = requests.post(
+            webhook_url,
+            json=payload,
+            headers=headers,
+            timeout=timeout,
+        )
+        response.raise_for_status()
+        return True
+    except requests.RequestException as error:
+        print(
+            "WARNING: Failed to send webhook notification. "
+            f"Check NOTIFICATION_WEBHOOK_URL and endpoint availability. Error: {error}"
+        )
+        return False
+
+
 def send_email_message(subject: str, body: str) -> None:
+    webhook_sent = send_webhook_message(subject=subject, body=body)
+
     smtp_host = os.getenv("SMTP_HOST")
     smtp_port = int(os.getenv("SMTP_PORT", "587"))
     smtp_username = os.getenv("SMTP_USERNAME")
@@ -412,10 +447,19 @@ def send_email_message(subject: str, body: str) -> None:
         "ALERT_FROM_EMAIL": sender,
         "ALERT_TO_EMAIL": recipient,
     }
+
+    if not smtp_host:
+        if not webhook_sent:
+            print(
+                "WARNING: No notification channel configured. "
+                "Set SMTP_* + ALERT_* variables or NOTIFICATION_WEBHOOK_URL."
+            )
+        return
+
     missing = [name for name, value in required.items() if not value]
     if missing:
         print(
-            "WARNING: Cannot send stock alert email because the following environment "
+            "WARNING: SMTP is configured but missing required environment "
             f"variables are missing: {', '.join(missing)}"
         )
         return
