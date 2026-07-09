@@ -32,9 +32,12 @@ jobs:
           SMTP_PASSWORD: ${{ secrets.SMTP_PASSWORD }}
           ALERT_FROM_EMAIL: ${{ secrets.ALERT_FROM_EMAIL }}
           ALERT_TO_EMAIL: ${{ secrets.ALERT_TO_EMAIL }}
-          STOCK_PRODUCTS: ${{ secrets.STOCK_PRODUCTS }}
-          EMAIL_SUBJECT_PREFIX: Midea PortaSplit
-        run: python check_stock.py
+          STOCK_PRODUCTS: ${{ secrets.STOCK_PRODUCTS || vars.STOCK_PRODUCTS }}
+          EMAIL_SUBJECT_PREFIX: ClimRadar 75018
+        run: |
+          if ! python check_stock.py; then
+            echo "::warning::Stock check failed (see logs above); continuing without failing workflow."
+          fi
 
       - name: Commit updated state
         run: |
@@ -45,5 +48,10 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add state.json
-          git commit -m "Update stock state"
-          git push
+          if ! git commit -m "Update stock state"; then
+            echo "::warning::Unable to create commit for state.json; continuing."
+            exit 0
+          fi
+          if ! git push; then
+            echo "::warning::Unable to push updated state; continuing."
+          fi

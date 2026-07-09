@@ -3,10 +3,12 @@ from __future__ import annotations
 import json
 import os
 import smtplib
+import unicodedata
 from dataclasses import dataclass
 from email.message import EmailMessage
 from pathlib import Path
 from typing import Any
+from urllib.parse import urlparse
 
 import requests
 from bs4 import BeautifulSoup
@@ -47,11 +49,17 @@ def normalize_text(value: str) -> str:
     return " ".join(value.lower().split())
 
 
+def normalize_match_text(value: str) -> str:
+    normalized = unicodedata.normalize("NFKD", normalize_text(value))
+    return "".join(char for char in normalized if not unicodedata.combining(char))
+
+
 def load_products() -> list[dict[str, Any]]:
     raw_products = os.getenv("STOCK_PRODUCTS")
     if not raw_products:
         raise RuntimeError(
-            "STOCK_PRODUCTS is required and must define exact product page URLs."
+            "STOCK_PRODUCTS is required and must define exact product page URLs. "
+            "In GitHub Actions, set it in either secrets.STOCK_PRODUCTS or vars.STOCK_PRODUCTS."
         )
 
     products = json.loads(raw_products)
@@ -129,10 +137,10 @@ def save_state(state: dict[str, dict[str, Any]], initialized: bool = True) -> No
 
 
 def detect_stock_status(page_text: str, product: dict[str, Any]) -> ProductResult:
-    normalized_text = normalize_text(page_text)
-    expected_keywords = [normalize_text(item) for item in product.get("expected_keywords", [])]
-    in_stock_keywords = [normalize_text(item) for item in product.get("in_stock_keywords", [])]
-    out_of_stock_keywords = [normalize_text(item) for item in product.get("out_of_stock_keywords", [])]
+    normalized_text = normalize_match_text(page_text)
+    expected_keywords = [normalize_match_text(item) for item in product.get("expected_keywords", [])]
+    in_stock_keywords = [normalize_match_text(item) for item in product.get("in_stock_keywords", [])]
+    out_of_stock_keywords = [normalize_match_text(item) for item in product.get("out_of_stock_keywords", [])]
 
     if expected_keywords and not all(keyword in normalized_text for keyword in expected_keywords):
         return ProductResult(
@@ -170,14 +178,115 @@ def detect_stock_status(page_text: str, product: dict[str, Any]) -> ProductResul
     )
 
 
+def detect_climradar_status(soup: BeautifulSoup, product: dict[str, Any]) -> ProductResult:
+    normalized_lines = [
+        normalize_match_text(text)
+        for text in soup.stripped_strings
+        if text and text.strip()
+    ]
+    if not normalized_lines:
+        return ProductResult(
+            name=product["name"],
+            retailer=product["retailer"],
+            url=product["url"],
+            in_stock=None,
+            details="page is empty",
+        )
+
+    start_markers = [
+        "ce que le moniteur portasplit observe en ce moment",
+        "disponibilite en ligne",
+    ]
+    end_markers = [
+        "alertes e-mail",
+        "comment ca marche",
+        "questions frequentes",
+    ]
+
+    in_availability_section = False
+    section_lines: list[str] = []
+    for line in normalized_lines:
+        if not in_availability_section and any(marker in line for marker in start_markers):
+            in_availability_section = True
+
+        if not in_availability_section:
+            continue
+
+        if any(marker in line for marker in end_markers):
+            break
+
+        section_lines.append(line)
+
+    if not section_lines:
+        section_lines = normalized_lines
+
+    blocked_markers = ["acces interdit", "access denied"]
+    if any(marker in line for line in section_lines for marker in blocked_markers):
+        return ProductResult(
+            name=product["name"],
+            retailer=product["retailer"],
+            url=product["url"],
+            in_stock=None,
+            details="access to climradar page was blocked",
+        )
+
+    status_lines = [
+        line
+        for line in section_lines
+        if "en stock" in line or "stock faible" in line or "rupture" in line
+    ]
+
+    if not status_lines:
+        return ProductResult(
+            name=product["name"],
+            retailer=product["retailer"],
+            url=product["url"],
+            in_stock=None,
+            details="no climradar status markers found",
+        )
+
+    has_positive = any("en stock" in line or "stock faible" in line for line in status_lines)
+    has_rupture = any("rupture" in line for line in status_lines)
+
+    if has_positive:
+        details = "climradar reports at least one entry as en stock/stock faible"
+        if has_rupture:
+            details += " (other entries may still be rupture)"
+        return ProductResult(
+            name=product["name"],
+            retailer=product["retailer"],
+            url=product["url"],
+            in_stock=True,
+            details=details,
+        )
+
+    return ProductResult(
+        name=product["name"],
+        retailer=product["retailer"],
+        url=product["url"],
+        in_stock=False,
+        details="climradar reports only rupture entries",
+    )
+
+
 def fetch_product_status(session: requests.Session, product: dict[str, Any]) -> ProductResult:
     response = session.get(
         product["url"],
-        headers={"User-Agent": USER_AGENT},
+        headers={
+            "User-Agent": USER_AGENT,
+            "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+            "Accept-Language": "fr-FR,fr;q=0.9,en-US;q=0.8,en;q=0.7",
+            "Cache-Control": "no-cache",
+            "Pragma": "no-cache",
+        },
         timeout=REQUEST_TIMEOUT,
     )
     response.raise_for_status()
     soup = BeautifulSoup(response.text, "html.parser")
+    hostname = urlparse(product["url"]).hostname or ""
+    if "climradar.fr" in hostname.lower():
+        return detect_climradar_status(soup, product)
+
     page_text = soup.get_text(" ", strip=True)
     return detect_stock_status(page_text, product)
 
