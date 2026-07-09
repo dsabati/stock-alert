@@ -24,50 +24,8 @@ jobs:
       - name: Install dependencies
         run: pip install -r requirements.txt
 
-      - name: Debug webhook probe
-        env:
-          NOTIFICATION_WEBHOOK_URL: ${{ secrets.NOTIFICATION_WEBHOOK_URL || vars.NOTIFICATION_WEBHOOK_URL }}
-          NOTIFICATION_WEBHOOK_TIMEOUT: ${{ vars.NOTIFICATION_WEBHOOK_TIMEOUT || '15' }}
-          WEBHOOK_DEBUG_PROBE: ${{ vars.WEBHOOK_DEBUG_PROBE || 'false' }}
-        run: |
-          if [ "$WEBHOOK_DEBUG_PROBE" != "true" ]; then
-            echo "Webhook debug probe is disabled (set vars.WEBHOOK_DEBUG_PROBE=true to enable)."
-            exit 0
-          fi
-
-          python - <<'PY'
-          import os
-          import requests
-
-          webhook_url = os.getenv("NOTIFICATION_WEBHOOK_URL", "").strip()
-          timeout = int(os.getenv("NOTIFICATION_WEBHOOK_TIMEOUT", "15"))
-
-          if not webhook_url:
-              print("::warning::NOTIFICATION_WEBHOOK_URL is empty, webhook cannot be probed.")
-              raise SystemExit(0)
-
-          payload = {
-              "subject": "Stock alert webhook debug",
-              "message": "[debug] GitHub Actions webhook probe",
-              "text": "[debug] GitHub Actions webhook probe",
-              "content": "[debug] GitHub Actions webhook probe",
-          }
-
-          try:
-              response = requests.post(
-                  webhook_url,
-                  json=payload,
-                  headers={"Content-Type": "application/json"},
-                  timeout=timeout,
-              )
-              print(f"Webhook probe HTTP status: {response.status_code}")
-              if response.text:
-                  print(f"Webhook probe response preview: {response.text[:200].replace(chr(10), ' ')}")
-              if response.status_code >= 400:
-                  print("::warning::Webhook probe returned a non-success status code.")
-          except requests.RequestException as error:
-              print(f"::warning::Webhook probe failed: {error}")
-          PY
+      - name: Install Playwright browsers
+        run: playwright install chromium --with-deps
 
       - name: Check stock
         env:

@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import json
 import os
+import re
 import smtplib
 import unicodedata
 from dataclasses import dataclass
@@ -12,12 +13,14 @@ from urllib.parse import urlparse
 
 import requests
 from bs4 import BeautifulSoup
+from playwright.sync_api import sync_playwright
 
 
 USER_AGENT = (
     "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 "
     "(KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36"
 )
+_EMOJI_RE = re.compile("[\U00010000-\U0010ffff]", flags=re.UNICODE)
 STATE_FILE = Path(os.getenv("STATE_FILE", "state.json"))
 REQUEST_TIMEOUT = int(os.getenv("REQUEST_TIMEOUT", "30"))
 STATE_PRODUCTS_KEY = "products"
@@ -33,6 +36,7 @@ class ProductResult:
     url: str
     in_stock: bool | None
     details: str
+    section_entries: dict[str, list[dict[str, Any]]] | None = None
 
 
 @dataclass
@@ -45,6 +49,16 @@ class StatusChange:
 @dataclass
 class InitialStatus:
     result: ProductResult
+
+
+@dataclass
+class RestockEvent:
+    product_name: str
+    section: str
+    entry_name: str
+    location: str
+    price: str | None
+    url: str
 
 
 def normalize_text(value: str) -> str:
@@ -201,49 +215,25 @@ def detect_stock_status(page_text: str, product: dict[str, Any]) -> ProductResul
 
 
 def detect_climradar_status(soup: BeautifulSoup, product: dict[str, Any]) -> ProductResult:
-    normalized_lines = [
-        normalize_match_text(text)
-        for text in soup.stripped_strings
-        if text and text.strip()
-    ]
-    if not normalized_lines:
-        return ProductResult(
-            name=product["name"],
-            retailer=product["retailer"],
-            url=product["url"],
-            in_stock=None,
-            details="page is empty",
-        )
+    def parse_li_entry(li: Any) -> dict[str, Any] | None:
+        row_el = li.find(["a", "div"], recursive=False)
+        if not row_el:
+            return None
+        info_div = row_el.select_one("div.min-w-0.flex-1")
+        if not info_div:
+            return None
+        ps = info_div.find_all("p", recursive=False)
+        name = ps[0].get_text(strip=True) if ps else ""
+        sub = _EMOJI_RE.sub("", ps[1].get_text(strip=True)).strip() if len(ps) > 1 else ""
+        status_span = row_el.select_one("span.inline-flex")
+        status_text = normalize_match_text(status_span.get_text(strip=True)) if status_span else ""
+        is_available = "en stock" in status_text or "stock faible" in status_text
+        price_span = row_el.select_one("span.tabular-nums")
+        price = price_span.get_text(strip=True).replace("\xa0", "\u202f") if price_span else None
+        return {"name": name, "sub": sub, "price": price, "isAvailable": is_available}
 
-    start_markers = [
-        "ce que le moniteur portasplit observe en ce moment",
-        "disponibilite en ligne",
-    ]
-    end_markers = [
-        "alertes e-mail",
-        "comment ca marche",
-        "questions frequentes",
-    ]
-
-    in_availability_section = False
-    section_lines: list[str] = []
-    for line in normalized_lines:
-        if not in_availability_section and any(marker in line for marker in start_markers):
-            in_availability_section = True
-
-        if not in_availability_section:
-            continue
-
-        if any(marker in line for marker in end_markers):
-            break
-
-        section_lines.append(line)
-
-    if not section_lines:
-        section_lines = normalized_lines
-
-    blocked_markers = ["acces interdit", "access denied"]
-    if any(marker in line for line in section_lines for marker in blocked_markers):
+    page_text_norm = normalize_match_text(soup.get_text(" ", strip=True))
+    if any(m in page_text_norm for m in ["acces interdit", "access denied"]):
         return ProductResult(
             name=product["name"],
             retailer=product["retailer"],
@@ -252,34 +242,88 @@ def detect_climradar_status(soup: BeautifulSoup, product: dict[str, Any]) -> Pro
             details="access to climradar page was blocked",
         )
 
-    status_lines = [
-        line
-        for line in section_lines
-        if "en stock" in line or "stock faible" in line or "rupture" in line
-    ]
+    online_section: Any = None
+    physical_section: Any = None
+    for h3 in soup.find_all("h3"):
+        text = normalize_match_text(h3.get_text())
+        if "disponibilit" in text and "en ligne" in text:
+            online_section = h3.parent
+        elif "magasins physiques" in text:
+            physical_section = h3.parent
 
-    if not status_lines:
+    # Fallback for minor DOM/header shifts: pick first two sections that contain stock rows.
+    if not online_section or not physical_section:
+        candidate_sections = [
+            section for section in soup.find_all("section") if section.find("ul") and section.find("li")
+        ]
+        if not online_section and candidate_sections:
+            online_section = candidate_sections[0]
+        if not physical_section and len(candidate_sections) > 1:
+            physical_section = candidate_sections[1]
+
+    online_entries: list[dict[str, Any]] = []
+    physical_entries: list[dict[str, Any]] = []
+
+    if online_section:
+        ul = online_section.find("ul")
+        if ul:
+            for li in ul.find_all("li"):
+                entry = parse_li_entry(li)
+                if entry:
+                    item: dict[str, Any] = {
+                        "name": entry["name"],
+                        "website": entry["sub"],
+                        "isAvailable": entry["isAvailable"],
+                    }
+                    if entry["price"]:
+                        item["price"] = entry["price"]
+                    online_entries.append(item)
+
+    if physical_section:
+        ul = physical_section.find("ul")
+        if ul:
+            for li in ul.find_all("li"):
+                entry = parse_li_entry(li)
+                if entry:
+                    item = {
+                        "name": entry["name"],
+                        "localisation": entry["sub"],
+                        "isAvailable": entry["isAvailable"],
+                    }
+                    if entry["price"]:
+                        item["price"] = entry["price"]
+                    physical_entries.append(item)
+
+    debug_data = {"online": online_entries, "physical": physical_entries}
+    debug_path = Path(os.getenv("CLIMRADAR_DEBUG_FILE", "climradar_debug.json"))
+    debug_path.write_text(
+        json.dumps(debug_data, ensure_ascii=False, indent=2),
+        encoding="utf-8",
+    )
+    print(f"[DEBUG] climradar: {len(online_entries)} online + {len(physical_entries)} physical entries → {debug_path}")
+
+    if not online_entries and not physical_entries:
         return ProductResult(
             name=product["name"],
             retailer=product["retailer"],
             url=product["url"],
             in_stock=None,
-            details="no climradar status markers found",
+            details="no climradar entries found",
         )
 
-    has_positive = any("en stock" in line or "stock faible" in line for line in status_lines)
-    has_rupture = any("rupture" in line for line in status_lines)
+    all_entries = online_entries + physical_entries
+    has_positive = any(e["isAvailable"] for e in all_entries)
 
     if has_positive:
-        details = "climradar reports at least one entry as en stock/stock faible"
-        if has_rupture:
-            details += " (other entries may still be rupture)"
+        available_names = [e["name"] for e in all_entries if e["isAvailable"]]
+        details = "climradar: en stock/stock faible at: " + ", ".join(available_names)
         return ProductResult(
             name=product["name"],
             retailer=product["retailer"],
             url=product["url"],
             in_stock=True,
             details=details,
+            section_entries=debug_data,
         )
 
     return ProductResult(
@@ -288,10 +332,37 @@ def detect_climradar_status(soup: BeautifulSoup, product: dict[str, Any]) -> Pro
         url=product["url"],
         in_stock=False,
         details="climradar reports only rupture entries",
+        section_entries=debug_data,
     )
 
 
+def fetch_climradar_html(url: str) -> str:
+    with sync_playwright() as p:
+        browser = p.chromium.launch(headless=True)
+        context = browser.new_context(
+            user_agent=USER_AGENT,
+            locale="fr-FR",
+            extra_http_headers={"Accept-Language": "fr-FR,fr;q=0.9,en-US;q=0.8,en;q=0.7"},
+        )
+        page = context.new_page()
+        page.goto(url, wait_until="networkidle", timeout=REQUEST_TIMEOUT * 1000)
+        # Expand all collapsed sections (online + physical)
+        expand_locator = page.get_by_role("button", name=re.compile(r"[Dd][eé]plier"))
+        while expand_locator.count() > 0:
+            expand_locator.first.click()
+            page.wait_for_load_state("networkidle")
+        html = page.content()
+        browser.close()
+        return html
+
+
 def fetch_product_status(session: requests.Session, product: dict[str, Any]) -> ProductResult:
+    hostname = urlparse(product["url"]).hostname or ""
+    if "climradar.fr" in hostname.lower():
+        html = fetch_climradar_html(product["url"])
+        soup = BeautifulSoup(html, "html.parser")
+        return detect_climradar_status(soup, product)
+
     response = session.get(
         product["url"],
         headers={
@@ -306,11 +377,123 @@ def fetch_product_status(session: requests.Session, product: dict[str, Any]) -> 
     response.raise_for_status()
     soup = BeautifulSoup(response.text, "html.parser")
     hostname = urlparse(product["url"]).hostname or ""
-    if "climradar.fr" in hostname.lower():
-        return detect_climradar_status(soup, product)
 
     page_text = soup.get_text(" ", strip=True)
     return detect_stock_status(page_text, product)
+
+
+def _entry_key(name: str, location: str) -> str:
+    return f"{normalize_match_text(name)}|{normalize_match_text(location)}"
+
+
+def build_state_entry(result: ProductResult) -> dict[str, Any]:
+    if result.section_entries:
+        online_state = []
+        for entry in result.section_entries.get("online", []):
+            website = str(entry.get("website", ""))
+            online_state.append(
+                {
+                    "key": _entry_key(str(entry.get("name", "")), website),
+                    "name": str(entry.get("name", "")),
+                    "website": website,
+                    "price": entry.get("price"),
+                    "is_available": bool(entry.get("isAvailable", False)),
+                }
+            )
+
+        physical_state = []
+        for entry in result.section_entries.get("physical", []):
+            localisation = str(entry.get("localisation", ""))
+            physical_state.append(
+                {
+                    "key": _entry_key(str(entry.get("name", "")), localisation),
+                    "name": str(entry.get("name", "")),
+                    "localisation": localisation,
+                    "price": entry.get("price"),
+                    "is_available": bool(entry.get("isAvailable", False)),
+                }
+            )
+
+        return {
+            "retailer": result.retailer,
+            "url": result.url,
+            "online": online_state,
+            "physical": physical_state,
+            "summary_in_stock": result.in_stock,
+        }
+
+    return {
+        "retailer": result.retailer,
+        "url": result.url,
+        "online": [
+            {
+                "key": _entry_key(result.name, result.retailer),
+                "name": result.name,
+                "website": result.retailer,
+                "price": None,
+                "is_available": bool(result.in_stock),
+            }
+        ],
+        "physical": [],
+        "summary_in_stock": result.in_stock,
+    }
+
+
+def detect_restock_events(
+    previous_entry: dict[str, Any] | None,
+    current_entry: dict[str, Any],
+    product_name: str,
+    product_url: str,
+) -> list[RestockEvent]:
+    events: list[RestockEvent] = []
+    prev_online_map = {
+        str(item.get("key", "")): bool(item.get("is_available", False))
+        for item in previous_entry.get("online", [])
+        if isinstance(item, dict) and item.get("key")
+    } if isinstance(previous_entry, dict) else {}
+    prev_physical_map = {
+        str(item.get("key", "")): bool(item.get("is_available", False))
+        for item in previous_entry.get("physical", [])
+        if isinstance(item, dict) and item.get("key")
+    } if isinstance(previous_entry, dict) else {}
+
+    for item in current_entry.get("online", []):
+        if not isinstance(item, dict):
+            continue
+        key = str(item.get("key", ""))
+        now_available = bool(item.get("is_available", False))
+        was_available = prev_online_map.get(key)
+        if was_available is False and now_available:
+            events.append(
+                RestockEvent(
+                    product_name=product_name,
+                    section="online",
+                    entry_name=str(item.get("name", "unknown")),
+                    location=str(item.get("website", "")),
+                    price=str(item.get("price")) if item.get("price") else None,
+                    url=product_url,
+                )
+            )
+
+    for item in current_entry.get("physical", []):
+        if not isinstance(item, dict):
+            continue
+        key = str(item.get("key", ""))
+        now_available = bool(item.get("is_available", False))
+        was_available = prev_physical_map.get(key)
+        if was_available is False and now_available:
+            events.append(
+                RestockEvent(
+                    product_name=product_name,
+                    section="physical",
+                    entry_name=str(item.get("name", "unknown")),
+                    location=str(item.get("localisation", "")),
+                    price=str(item.get("price")) if item.get("price") else None,
+                    url=product_url,
+                )
+            )
+
+    return events
 
 
 def build_email_body(changes: list[StatusChange]) -> str:
@@ -328,6 +511,25 @@ def build_email_body(changes: list[StatusChange]) -> str:
                 "",
             ]
         )
+    return "\n".join(lines).strip()
+
+
+def build_restock_email_body(events: list[RestockEvent]) -> str:
+    lines = [
+        "Restock detected:",
+        "",
+        f"{len(events)} previously unavailable entries are now available.",
+        "",
+    ]
+    for event in events:
+        lines.append(f"- Product: {event.product_name}")
+        lines.append(f"  Section: {event.section}")
+        lines.append(f"  Name: {event.entry_name}")
+        lines.append(f"  Location: {event.location}")
+        if event.price:
+            lines.append(f"  Price: {event.price}")
+        lines.append(f"  URL: {event.url}")
+        lines.append("")
     return "\n".join(lines).strip()
 
 
@@ -504,6 +706,11 @@ def send_email(changes: list[StatusChange]) -> None:
     send_email_message(subject=subject, body=build_email_body(changes))
 
 
+def send_restock_email(events: list[RestockEvent]) -> None:
+    subject = f"{os.getenv('EMAIL_SUBJECT_PREFIX', 'Stock alert')}: {len(events)} restock(s) detected"
+    send_email_message(subject=subject, body=build_restock_email_body(events))
+
+
 def send_initial_email(statuses: list[InitialStatus]) -> None:
     subject = (
         f"{os.getenv('EMAIL_SUBJECT_PREFIX', 'Stock alert')}: "
@@ -518,8 +725,7 @@ def main() -> int:
     previous_state = state_data[STATE_PRODUCTS_KEY]
     is_first_run = not bool(state_data[STATE_INITIALIZED_KEY])
     next_state = dict(previous_state)
-    changes: list[StatusChange] = []
-    initial_statuses: list[InitialStatus] = []
+    restock_events: list[RestockEvent] = []
     errors: list[str] = []
     determined_statuses = 0
     previous_inconclusive = bool(
@@ -541,28 +747,17 @@ def main() -> int:
                 continue
 
             determined_statuses += 1
-            current_entry = {
-                "retailer": result.retailer,
-                "url": result.url,
-                "in_stock": result.in_stock,
-            }
+            current_entry = build_state_entry(result)
             previous_entry = previous_state.get(result.name)
-            previous_status = (
-                previous_entry.get("in_stock")
-                if isinstance(previous_entry, dict) and isinstance(previous_entry.get("in_stock"), bool)
-                else None
-            )
 
-            if previous_status is not None and previous_status != result.in_stock:
-                changes.append(
-                    StatusChange(
-                        result=result,
-                        previous_in_stock=previous_status,
-                        current_in_stock=result.in_stock,
-                    )
+            restock_events.extend(
+                detect_restock_events(
+                    previous_entry=previous_entry if isinstance(previous_entry, dict) else None,
+                    current_entry=current_entry,
+                    product_name=result.name,
+                    product_url=result.url,
                 )
-            elif is_first_run:
-                initial_statuses.append(InitialStatus(result=result))
+            )
 
             next_state[result.name] = current_entry
 
@@ -576,15 +771,6 @@ def main() -> int:
             for error in errors:
                 print(f"WARNING: {error}")
 
-        alert_on_inconclusive = os.getenv("ALERT_ON_INCONCLUSIVE", "true").lower() == "true"
-        alert_every_run = os.getenv("ALERT_ON_INCONCLUSIVE_EVERY_RUN", "false").lower() == "true"
-        if alert_on_inconclusive and (alert_every_run or not previous_inconclusive):
-            send_inconclusive_email(
-                products=products,
-                errors=errors,
-                previous_inconclusive=previous_inconclusive,
-            )
-
         save_state(
             next_state,
             initialized=bool(state_data[STATE_INITIALIZED_KEY]),
@@ -592,14 +778,34 @@ def main() -> int:
         )
         return 0
 
-    alert_on_recovery = os.getenv("ALERT_ON_RECOVERY", "false").lower() == "true"
-    if previous_inconclusive and alert_on_recovery:
-        send_recovery_email()
+    available_online = 0
+    available_physical = 0
+    tracked_online = 0
+    tracked_physical = 0
+    for product_state in next_state.values():
+        if not isinstance(product_state, dict):
+            continue
+        online_entries = product_state.get("online", [])
+        physical_entries = product_state.get("physical", [])
+        if isinstance(online_entries, list):
+            tracked_online += len(online_entries)
+            available_online += sum(
+                1 for entry in online_entries if isinstance(entry, dict) and entry.get("is_available")
+            )
+        if isinstance(physical_entries, list):
+            tracked_physical += len(physical_entries)
+            available_physical += sum(
+                1 for entry in physical_entries if isinstance(entry, dict) and entry.get("is_available")
+            )
 
-    if is_first_run and initial_statuses:
-        send_initial_email(initial_statuses)
-    elif changes:
-        send_email(changes)
+    print("Summary:")
+    print(f"- Determined products: {determined_statuses}/{len(products)}")
+    print(f"- Online availability: {available_online}/{tracked_online}")
+    print(f"- Physical availability: {available_physical}/{tracked_physical}")
+    print(f"- New restocks: {len(restock_events)}")
+
+    if restock_events:
+        send_restock_email(restock_events)
 
     if next_state != previous_state or is_first_run:
         save_state(next_state, initialized=True, last_run_inconclusive=False)
