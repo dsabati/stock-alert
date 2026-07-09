@@ -19,6 +19,8 @@ The script includes dedicated parsing for ClimRadar pages (for example `https://
 - `EMAIL_SUBJECT_PREFIX`: email subject prefix, defaults to `Stock alert`
 - `NOTIFICATION_WEBHOOK_URL`: optional HTTP webhook endpoint for notifications (Slack/Discord/ntfy/custom)
 - `NOTIFICATION_WEBHOOK_TIMEOUT`: webhook timeout in seconds, defaults to `15`
+- `NOTIFICATION_DEBUG`: if `true`, prints webhook send attempts and HTTP status in script logs, defaults to `false`
+- `WEBHOOK_DEBUG_PROBE`: if `true` in GitHub Actions variables, runs an explicit webhook probe step, defaults to `false`
 - `ALERT_ON_INCONCLUSIVE`: send an email when no product status can be determined in a run, defaults to `true`
 - `ALERT_ON_INCONCLUSIVE_EVERY_RUN`: if `true`, send inconclusive email every run (can be noisy), defaults to `false`
 - `ALERT_ON_RECOVERY`: send an email when checks recover from inconclusive to determined, defaults to `false`

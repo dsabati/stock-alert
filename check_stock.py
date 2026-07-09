@@ -401,6 +401,8 @@ def send_webhook_message(subject: str, body: str) -> bool:
         return False
 
     timeout = int(os.getenv("NOTIFICATION_WEBHOOK_TIMEOUT", "15"))
+    debug_webhook = os.getenv("NOTIFICATION_DEBUG", "false").lower() == "true"
+    webhook_host = (urlparse(webhook_url).hostname or "unknown-host").lower()
     payload = {
         "subject": subject,
         "message": body,
@@ -411,6 +413,12 @@ def send_webhook_message(subject: str, body: str) -> bool:
         "Content-Type": "application/json",
     }
 
+    if debug_webhook:
+        print(
+            "INFO: Webhook notification attempt "
+            f"host={webhook_host} subject={subject} timeout={timeout}s"
+        )
+
     try:
         response = requests.post(
             webhook_url,
@@ -419,11 +427,14 @@ def send_webhook_message(subject: str, body: str) -> bool:
             timeout=timeout,
         )
         response.raise_for_status()
+        if debug_webhook:
+            print(f"INFO: Webhook notification sent successfully (status={response.status_code})")
         return True
     except requests.RequestException as error:
         print(
             "WARNING: Failed to send webhook notification. "
-            f"Check NOTIFICATION_WEBHOOK_URL and endpoint availability. Error: {error}"
+            "Check NOTIFICATION_WEBHOOK_URL and endpoint availability. "
+            f"Host={webhook_host}. Error: {error}"
         )
         return False
 
