@@ -63,3 +63,23 @@ For non-ClimRadar pages, provide keyword lists:
 ```env
 STOCK_PRODUCTS=[{"name":"Product name","retailer":"Retailer","url":"https://example.com/product","expected_keywords":["brand","model"],"in_stock_keywords":["add to cart"],"out_of_stock_keywords":["out of stock"]}]
 ```
+
+## Reliable scheduling with Cloudflare
+
+GitHub scheduled workflows can be delayed or skipped at peak times. This repository includes a Cloudflare Worker that triggers this workflow via `workflow_dispatch` on a fixed cron.
+
+Files:
+
+- `cloudflare/trigger-github-workflow.mjs`
+- `cloudflare/wrangler.toml`
+- `cloudflare/README.md`
+
+Quick start:
+
+```bash
+cd cloudflare
+wrangler secret put GITHUB_TOKEN
+wrangler deploy
+```
+
+See `cloudflare/README.md` for full setup steps and required GitHub token permissions.

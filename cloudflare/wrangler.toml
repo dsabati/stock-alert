@@ -1,0 +1,13 @@
+name = "stock-alert-dispatcher"
+main = "trigger-github-workflow.mjs"
+compatibility_date = "2026-07-09"
+
+[triggers]
+crons = ["*/15 * * * *"]
+
+[vars]
+# Update these values for your repository.
+GITHUB_OWNER = "dsabati"
+GITHUB_REPO = "stock-alert"
+GITHUB_WORKFLOW_FILE = "check.yml"
+GITHUB_REF = "main"

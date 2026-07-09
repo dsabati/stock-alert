@@ -1,1 +1,486 @@
-{}
+{
+  "health": {
+    "last_run_inconclusive": false
+  },
+  "initialized": true,
+  "products": {
+    "Midea PortaSplit - Paris 75018": {
+      "online": [
+        {
+          "is_available": true,
+          "key": "manomano en ligne|manomano.fr",
+          "name": "ManoMano en ligne",
+          "price": "899\u202f\u20ac",
+          "website": "manomano.fr"
+        },
+        {
+          "is_available": false,
+          "key": "amazon en ligne|amazon.fr",
+          "name": "Amazon en ligne",
+          "price": null,
+          "website": "amazon.fr"
+        },
+        {
+          "is_available": false,
+          "key": "brico en ligne|brico.be",
+          "name": "Brico en ligne",
+          "price": "999\u202f\u20ac",
+          "website": "brico.be"
+        },
+        {
+          "is_available": false,
+          "key": "castorama en ligne|castorama.fr",
+          "name": "Castorama en ligne",
+          "price": "949\u202f\u20ac",
+          "website": "castorama.fr"
+        },
+        {
+          "is_available": false,
+          "key": "darty en ligne|darty.com",
+          "name": "Darty en ligne",
+          "price": null,
+          "website": "darty.com"
+        },
+        {
+          "is_available": false,
+          "key": "fnac en ligne|fnac.com",
+          "name": "Fnac en ligne",
+          "price": "990\u202f\u20ac",
+          "website": "fnac.com"
+        },
+        {
+          "is_available": false,
+          "key": "hubo en ligne|hubo.be",
+          "name": "Hubo en ligne",
+          "price": "949\u202f\u20ac",
+          "website": "hubo.be"
+        },
+        {
+          "is_available": false,
+          "key": "leroy merlin en ligne|leroymerlin.fr",
+          "name": "Leroy Merlin en ligne",
+          "price": "999\u202f\u20ac",
+          "website": "leroymerlin.fr"
+        },
+        {
+          "is_available": false,
+          "key": "optimea en ligne|optimea.fr",
+          "name": "Optimea en ligne",
+          "price": null,
+          "website": "optimea.fr"
+        }
+      ],
+      "physical": [
+        {
+          "is_available": false,
+          "key": "boulanger paris bhv le marais|75004 paris\u00b7 0,5 km",
+          "localisation": "75004 Paris\u00b7 0,5 km",
+          "name": "Boulanger Paris BHV Le Marais",
+          "price": "999\u202f\u20ac"
+        },
+        {
+          "is_available": false,
+          "key": "boulanger paris haussmann maison|75009 paris\u00b7 2 km",
+          "localisation": "75009 Paris\u00b7 2 km",
+          "name": "Boulanger Paris Haussmann Maison",
+          "price": "999\u202f\u20ac"
+        },
+        {
+          "is_available": false,
+          "key": "boulanger paris montparnasse|75006 paris\u00b7 2,1 km",
+          "localisation": "75006 Paris\u00b7 2,1 km",
+          "name": "Boulanger Paris Montparnasse",
+          "price": "999\u202f\u20ac"
+        },
+        {
+          "is_available": false,
+          "key": "boulanger paris montmartre|75018 paris\u00b7 2,7 km",
+          "localisation": "75018 Paris\u00b7 2,7 km",
+          "name": "Boulanger Paris Montmartre",
+          "price": "999\u202f\u20ac"
+        },
+        {
+          "is_available": false,
+          "key": "castorama place de clichy|75018 paris\u00b7 3,2 km",
+          "localisation": "75018 PARIS\u00b7 3,2 km",
+          "name": "Castorama Place de Clichy",
+          "price": null
+        },
+        {
+          "is_available": false,
+          "key": "boulanger paris italie 2|75013 paris\u00b7 3,5 km",
+          "localisation": "75013 Paris\u00b7 3,5 km",
+          "name": "Boulanger Paris Italie 2",
+          "price": "999\u202f\u20ac"
+        },
+        {
+          "is_available": false,
+          "key": "castorama nation|75020 paris\u00b7 4 km",
+          "localisation": "75020 PARIS\u00b7 4 km",
+          "name": "Castorama Nation",
+          "price": null
+        },
+        {
+          "is_available": false,
+          "key": "castorama bir hakeim|75015 paris\u00b7 4,2 km",
+          "localisation": "75015 Paris\u00b7 4,2 km",
+          "name": "Castorama Bir Hakeim",
+          "price": null
+        },
+        {
+          "is_available": false,
+          "key": "boulanger paris beaugrenelle|75015 paris\u00b7 4,7 km",
+          "localisation": "75015 Paris\u00b7 4,7 km",
+          "name": "Boulanger Paris Beaugrenelle",
+          "price": "999\u202f\u20ac"
+        },
+        {
+          "is_available": false,
+          "key": "boulanger paris rosa parks|75019 paris\u00b7 4,9 km",
+          "localisation": "75019 Paris\u00b7 4,9 km",
+          "name": "Boulanger Paris Rosa Parks",
+          "price": "999\u202f\u20ac"
+        },
+        {
+          "is_available": false,
+          "key": "boulanger paris passy|75016 paris\u00b7 5,2 km",
+          "localisation": "75016 Paris\u00b7 5,2 km",
+          "name": "Boulanger Paris Passy",
+          "price": "999\u202f\u20ac"
+        },
+        {
+          "is_available": false,
+          "key": "boulanger levallois|92300 levallois-perret\u00b7 5,2 km",
+          "localisation": "92300 Levallois-Perret\u00b7 5,2 km",
+          "name": "Boulanger Levallois",
+          "price": "999\u202f\u20ac"
+        },
+        {
+          "is_available": false,
+          "key": "boulanger issy les moulineaux|92130 issy les moulineaux\u00b7 6,4 km",
+          "localisation": "92130 Issy les Moulineaux\u00b7 6,4 km",
+          "name": "Boulanger Issy les Moulineaux",
+          "price": "999\u202f\u20ac"
+        },
+        {
+          "is_available": false,
+          "key": "boulanger gennevilliers|92230 gennevilliers\u00b7 8,6 km",
+          "localisation": "92230 Gennevilliers\u00b7 8,6 km",
+          "name": "Boulanger Gennevilliers",
+          "price": "999\u202f\u20ac"
+        },
+        {
+          "is_available": false,
+          "key": "boulanger domus - rosny sous bois|93110 rosny-sous-bois\u00b7 9,5 km",
+          "localisation": "93110 Rosny-Sous-Bois\u00b7 9,5 km",
+          "name": "Boulanger Domus - Rosny Sous Bois",
+          "price": "999\u202f\u20ac"
+        },
+        {
+          "is_available": false,
+          "key": "boulanger creteil|94000 creteil\u00b7 11 km",
+          "localisation": "94000 Creteil\u00b7 11 km",
+          "name": "Boulanger Creteil",
+          "price": "999\u202f\u20ac"
+        },
+        {
+          "is_available": false,
+          "key": "castorama creteil|94034 creteil\u00b7 11 km",
+          "localisation": "94034 Cr\u00e9teil\u00b7 11 km",
+          "name": "Castorama Cr\u00e9teil",
+          "price": null
+        },
+        {
+          "is_available": false,
+          "key": "boulanger thiais|94320 thiais\u00b7 12 km",
+          "localisation": "94320 Thiais\u00b7 12 km",
+          "name": "Boulanger Thiais",
+          "price": "999\u202f\u20ac"
+        },
+        {
+          "is_available": false,
+          "key": "castorama villemomble|93250 villemomble\u00b7 12 km",
+          "localisation": "93250 VILLEMOMBLE\u00b7 12 km",
+          "name": "Castorama Villemomble",
+          "price": null
+        },
+        {
+          "is_available": false,
+          "key": "castorama fresnes|94260 fresnes\u00b7 12 km",
+          "localisation": "94260 FRESNES\u00b7 12 km",
+          "name": "Castorama Fresnes",
+          "price": null
+        },
+        {
+          "is_available": false,
+          "key": "boulanger velizy 2|78140 velizy-villacoublay\u00b7 13 km",
+          "localisation": "78140 V\u00e9lizy-Villacoublay\u00b7 13 km",
+          "name": "Boulanger V\u00e9lizy 2",
+          "price": "999\u202f\u20ac"
+        },
+        {
+          "is_available": false,
+          "key": "castorama velizy|78140 za velizy-villacoublay\u00b7 13 km",
+          "localisation": "78140 ZA VELIZY-VILLACOUBLAY\u00b7 13 km",
+          "name": "Castorama V\u00e9lizy",
+          "price": null
+        },
+        {
+          "is_available": false,
+          "key": "boulanger sarcelles|95200 sarcelles\u00b7 14 km",
+          "localisation": "95200 Sarcelles\u00b7 14 km",
+          "name": "Boulanger Sarcelles",
+          "price": "999\u202f\u20ac"
+        },
+        {
+          "is_available": false,
+          "key": "tecnomat bonneuil-sur-marne|94380 bonneuil-sur-marne\u00b7 14 km",
+          "localisation": "94380 Bonneuil-Sur-Marne\u00b7 14 km",
+          "name": "Tecnomat Bonneuil-sur-Marne",
+          "price": null
+        },
+        {
+          "is_available": false,
+          "key": "boulanger villiers-sur-marne|94350 villiers-sur-marne\u00b7 15 km",
+          "localisation": "94350 Villiers-Sur-Marne\u00b7 15 km",
+          "name": "Boulanger Villiers-sur-Marne",
+          "price": "999\u202f\u20ac"
+        },
+        {
+          "is_available": false,
+          "key": "castorama cormeilles-en-parisis|95240 cormeilles-en-parisis\u00b7 15 km",
+          "localisation": "95240 Cormeilles-en-Parisis\u00b7 15 km",
+          "name": "Castorama Cormeilles-en-Parisis",
+          "price": null
+        },
+        {
+          "is_available": false,
+          "key": "tecnomat aulnay-sous-bois|93600 aulnay-sous-bois\u00b7 16 km",
+          "localisation": "93600 Aulnay-Sous-Bois\u00b7 16 km",
+          "name": "Tecnomat Aulnay-sous-Bois",
+          "price": null
+        },
+        {
+          "is_available": false,
+          "key": "castorama ormesson|94430 chennevieres sur marne\u00b7 17 km",
+          "localisation": "94430 CHENNEVIERES SUR MARNE\u00b7 17 km",
+          "name": "Castorama Ormesson",
+          "price": null
+        },
+        {
+          "is_available": false,
+          "key": "castorama gonesse|95700 roissy charles de gaulle\u00b7 17 km",
+          "localisation": "95700 ROISSY CHARLES DE GAULLE\u00b7 17 km",
+          "name": "Castorama Gonesse",
+          "price": null
+        },
+        {
+          "is_available": false,
+          "key": "boulanger bhv parly 2|78150 le chesnay\u00b7 17 km",
+          "localisation": "78150 Le Chesnay\u00b7 17 km",
+          "name": "Boulanger BHV PARLY 2",
+          "price": "999\u202f\u20ac"
+        },
+        {
+          "is_available": false,
+          "key": "boulanger montigny les cormeilles|95370 montigny les cormeilles\u00b7 19 km",
+          "localisation": "95370 Montigny Les Cormeilles\u00b7 19 km",
+          "name": "Boulanger Montigny Les Cormeilles",
+          "price": "999\u202f\u20ac"
+        },
+        {
+          "is_available": false,
+          "key": "boulanger villebon|91140 villebon sur yvette\u00b7 19 km",
+          "localisation": "91140 Villebon sur Yvette\u00b7 19 km",
+          "name": "Boulanger Villebon",
+          "price": "999\u202f\u20ac"
+        },
+        {
+          "is_available": false,
+          "key": "castorama pierrelaye|95480 pierrelaye\u00b7 22 km",
+          "localisation": "95480 Pierrelaye\u00b7 22 km",
+          "name": "Castorama Pierrelaye",
+          "price": null
+        },
+        {
+          "is_available": false,
+          "key": "boulanger lognes|77185 lognes\u00b7 22 km",
+          "localisation": "77185 Lognes\u00b7 22 km",
+          "name": "Boulanger Lognes",
+          "price": "999\u202f\u20ac"
+        },
+        {
+          "is_available": false,
+          "key": "tecnomat villeparisis|77270 villeparisis\u00b7 22 km",
+          "localisation": "77270 Villeparisis\u00b7 22 km",
+          "name": "Tecnomat Villeparisis",
+          "price": null
+        },
+        {
+          "is_available": false,
+          "key": "castorama les ulis|91940 les ulis\u00b7 23 km",
+          "localisation": "91940 LES ULIS\u00b7 23 km",
+          "name": "Castorama Les Ulis",
+          "price": null
+        },
+        {
+          "is_available": false,
+          "key": "castorama chambourcy|78240 chambourcy\u00b7 23 km",
+          "localisation": "78240 CHAMBOURCY\u00b7 23 km",
+          "name": "Castorama Chambourcy",
+          "price": null
+        },
+        {
+          "is_available": false,
+          "key": "tecnomat montlhery|91620 la ville-du-bois\u00b7 24 km",
+          "localisation": "91620 La Ville-Du-Bois\u00b7 24 km",
+          "name": "Tecnomat Montlh\u00e9ry",
+          "price": null
+        },
+        {
+          "is_available": false,
+          "key": "boulanger claye souilly|77410 claye souilly\u00b7 25 km",
+          "localisation": "77410 Claye Souilly\u00b7 25 km",
+          "name": "Boulanger Claye Souilly",
+          "price": "999\u202f\u20ac"
+        },
+        {
+          "is_available": false,
+          "key": "castorama claye-souilly|77410 claye souilly\u00b7 25 km",
+          "localisation": "77410 CLAYE SOUILLY\u00b7 25 km",
+          "name": "Castorama Claye-Souilly",
+          "price": null
+        },
+        {
+          "is_available": false,
+          "key": "boulanger eragny sur oise|95610 eragny\u00b7 26 km",
+          "localisation": "95610 Eragny\u00b7 26 km",
+          "name": "Boulanger Eragny Sur Oise",
+          "price": "999\u202f\u20ac"
+        },
+        {
+          "is_available": false,
+          "key": "boulanger sainte genevieve des bois|91700 sainte-genevieve-des-bois\u00b7 26 km",
+          "localisation": "91700 Sainte-Genevi\u00e8ve-Des-Bois\u00b7 26 km",
+          "name": "Boulanger Sainte Genevi\u00e8ve Des Bois",
+          "price": "999\u202f\u20ac"
+        },
+        {
+          "is_available": false,
+          "key": "castorama les-clayes-sous-bois|78340 les-clayes-sous-bois\u00b7 28 km",
+          "localisation": "78340 LES-CLAYES-SOUS-BOIS\u00b7 28 km",
+          "name": "Castorama Les-Clayes-Sous-Bois",
+          "price": null
+        },
+        {
+          "is_available": false,
+          "key": "boulanger les clayes-sous-bois|78340 les clayes-sous-bois\u00b7 28 km",
+          "localisation": "78340 Les Clayes-Sous-Bois\u00b7 28 km",
+          "name": "Boulanger Les Clayes-Sous-Bois",
+          "price": "999\u202f\u20ac"
+        },
+        {
+          "is_available": false,
+          "key": "boulanger orgeval|78630 orgeval\u00b7 28 km",
+          "localisation": "78630 Orgeval\u00b7 28 km",
+          "name": "Boulanger Orgeval",
+          "price": "999\u202f\u20ac"
+        },
+        {
+          "is_available": false,
+          "key": "tecnomat lisses|91090 lisses\u00b7 30 km",
+          "localisation": "91090 Lisses\u00b7 30 km",
+          "name": "Tecnomat Lisses",
+          "price": null
+        },
+        {
+          "is_available": false,
+          "key": "boulanger montevrain|77144 montevrain\u00b7 30 km",
+          "localisation": "77144 Montevrain\u00b7 30 km",
+          "name": "Boulanger Montevrain",
+          "price": "999\u202f\u20ac"
+        },
+        {
+          "is_available": false,
+          "key": "boulanger osny|95520 osny\u00b7 31 km",
+          "localisation": "95520 Osny\u00b7 31 km",
+          "name": "Boulanger Osny",
+          "price": "999\u202f\u20ac"
+        },
+        {
+          "is_available": false,
+          "key": "castorama villabe|91100 villabe\u00b7 31 km",
+          "localisation": "91100 Villab\u00e9\u00b7 31 km",
+          "name": "Castorama Villab\u00e9",
+          "price": null
+        },
+        {
+          "is_available": false,
+          "key": "boulanger coignieres|78310 coignieres\u00b7 33 km",
+          "localisation": "78310 Coignieres\u00b7 33 km",
+          "name": "Boulanger Coigni\u00e8res",
+          "price": "999\u202f\u20ac"
+        },
+        {
+          "is_available": false,
+          "key": "castorama coignieres|78310 coignieres\u00b7 33 km",
+          "localisation": "78310 COIGNIERES\u00b7 33 km",
+          "name": "Castorama Coigni\u00e8res",
+          "price": null
+        },
+        {
+          "is_available": false,
+          "key": "boulanger persan-chambly|95340 persan\u00b7 33 km",
+          "localisation": "95340 PERSAN\u00b7 33 km",
+          "name": "Boulanger Persan-Chambly",
+          "price": "999\u202f\u20ac"
+        },
+        {
+          "is_available": false,
+          "key": "boulanger melun - cesson|77240 cesson\u00b7 36 km",
+          "localisation": "77240 Cesson\u00b7 36 km",
+          "name": "Boulanger Melun - Cesson",
+          "price": "999\u202f\u20ac"
+        },
+        {
+          "is_available": false,
+          "key": "castorama melun|77000 melun\u00b7 40 km",
+          "localisation": "77000 MELUN\u00b7 40 km",
+          "name": "Castorama Melun",
+          "price": null
+        },
+        {
+          "is_available": false,
+          "key": "castorama creil st maximin|60740 st maximin\u00b7 43 km",
+          "localisation": "60740 St MAXIMIN\u00b7 43 km",
+          "name": "Castorama Creil St Maximin",
+          "price": null
+        },
+        {
+          "is_available": false,
+          "key": "boulanger creil - saint maximin|60740 st maximin\u00b7 43 km",
+          "localisation": "60740 St Maximin\u00b7 43 km",
+          "name": "Boulanger Creil - Saint Maximin",
+          "price": "999\u202f\u20ac"
+        },
+        {
+          "is_available": false,
+          "key": "tecnomat dammarie-les-lys|77190 dammarie-les-lys\u00b7 43 km",
+          "localisation": "77190 Dammarie-Les-Lys\u00b7 43 km",
+          "name": "Tecnomat Dammarie-l\u00e8s-Lys",
+          "price": null
+        },
+        {
+          "is_available": false,
+          "key": "tecnomat nogent-sur-oise|60180 nogent-sur-oise\u00b7 48 km",
+          "localisation": "60180 Nogent-Sur-Oise\u00b7 48 km",
+          "name": "Tecnomat Nogent-sur-Oise",
+          "price": null
+        }
+      ],
+      "retailer": "ClimRadar",
+      "summary_in_stock": true,
+      "url": "https://climradar.fr/?cp=75018"
+    }
+  }
+}
