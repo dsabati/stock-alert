@@ -709,6 +709,7 @@ def main() -> int:
     is_first_run = not bool(state_data[STATE_INITIALIZED_KEY])
     next_state = dict(previous_state)
     restock_events: list[RestockEvent] = []
+    initial_statuses: list[InitialStatus] = []
     errors: list[str] = []
     determined_statuses = 0
     previous_inconclusive = bool(
@@ -730,6 +731,8 @@ def main() -> int:
                 continue
 
             determined_statuses += 1
+            if is_first_run:
+                initial_statuses.append(InitialStatus(result=result))
             current_entry = build_state_entry(result)
             previous_entry = previous_state.get(result.name)
 
@@ -789,6 +792,8 @@ def main() -> int:
 
     if restock_events:
         send_restock_email(restock_events)
+    if is_first_run and initial_statuses:
+        send_initial_email(initial_statuses)
 
     if next_state != previous_state or is_first_run:
         save_state(next_state, initialized=True, last_run_inconclusive=False)
