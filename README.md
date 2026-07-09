@@ -17,6 +17,11 @@ The script includes dedicated parsing for ClimRadar pages (for example `https://
 
 - `STOCK_PRODUCTS`: required JSON array with exact product page URLs
 - `EMAIL_SUBJECT_PREFIX`: email subject prefix, defaults to `Stock alert`
+- `ALERT_ON_INCONCLUSIVE`: send an email when no product status can be determined in a run, defaults to `true`
+- `ALERT_ON_INCONCLUSIVE_EVERY_RUN`: if `true`, send inconclusive email every run (can be noisy), defaults to `false`
+- `ALERT_ON_RECOVERY`: send an email when checks recover from inconclusive to determined, defaults to `false`
+
+By default, inconclusive alerts are deduplicated: one email is sent when checks first become inconclusive, then suppressed on repeated inconclusive runs until recovery.
 
 ## Local configuration
 

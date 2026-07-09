@@ -22,6 +22,8 @@ STATE_FILE = Path(os.getenv("STATE_FILE", "state.json"))
 REQUEST_TIMEOUT = int(os.getenv("REQUEST_TIMEOUT", "30"))
 STATE_PRODUCTS_KEY = "products"
 STATE_INITIALIZED_KEY = "initialized"
+STATE_HEALTH_KEY = "health"
+STATE_INCONCLUSIVE_KEY = "last_run_inconclusive"
 
 
 @dataclass
@@ -93,12 +95,20 @@ def load_products() -> list[dict[str, Any]]:
 
 def load_state() -> dict[str, dict[str, Any]]:
     if not STATE_FILE.exists():
-        return {STATE_INITIALIZED_KEY: False, STATE_PRODUCTS_KEY: {}}
+        return {
+            STATE_INITIALIZED_KEY: False,
+            STATE_PRODUCTS_KEY: {},
+            STATE_HEALTH_KEY: {STATE_INCONCLUSIVE_KEY: False},
+        }
 
     with STATE_FILE.open("r", encoding="utf-8") as state_file:
         data = json.load(state_file)
         if not isinstance(data, dict):
-            return {STATE_INITIALIZED_KEY: False, STATE_PRODUCTS_KEY: {}}
+            return {
+                STATE_INITIALIZED_KEY: False,
+                STATE_PRODUCTS_KEY: {},
+                STATE_HEALTH_KEY: {STATE_INCONCLUSIVE_KEY: False},
+            }
 
         # Backward compatibility for the previous state format (flat product map).
         if STATE_PRODUCTS_KEY not in data:
@@ -110,23 +120,35 @@ def load_state() -> dict[str, dict[str, Any]]:
             return {
                 STATE_INITIALIZED_KEY: bool(products),
                 STATE_PRODUCTS_KEY: products,
+                STATE_HEALTH_KEY: {STATE_INCONCLUSIVE_KEY: False},
             }
 
         products = data.get(STATE_PRODUCTS_KEY)
         initialized = data.get(STATE_INITIALIZED_KEY)
+        health = data.get(STATE_HEALTH_KEY)
+        if not isinstance(health, dict):
+            health = {STATE_INCONCLUSIVE_KEY: False}
         return {
             STATE_INITIALIZED_KEY: bool(initialized),
             STATE_PRODUCTS_KEY: products if isinstance(products, dict) else {},
+            STATE_HEALTH_KEY: {
+                STATE_INCONCLUSIVE_KEY: bool(health.get(STATE_INCONCLUSIVE_KEY, False))
+            },
         }
 
 
-def save_state(state: dict[str, dict[str, Any]], initialized: bool = True) -> None:
+def save_state(
+    state: dict[str, dict[str, Any]],
+    initialized: bool = True,
+    last_run_inconclusive: bool = False,
+) -> None:
     STATE_FILE.parent.mkdir(parents=True, exist_ok=True)
     STATE_FILE.write_text(
         json.dumps(
             {
                 STATE_INITIALIZED_KEY: initialized,
                 STATE_PRODUCTS_KEY: state,
+                STATE_HEALTH_KEY: {STATE_INCONCLUSIVE_KEY: last_run_inconclusive},
             },
             indent=2,
             sort_keys=True,
@@ -326,6 +348,53 @@ def build_initial_email_body(statuses: list[InitialStatus]) -> str:
     return "\n".join(lines).strip()
 
 
+def build_inconclusive_email_body(
+    products: list[dict[str, Any]],
+    errors: list[str],
+    previous_inconclusive: bool,
+) -> str:
+    lines = [
+        "Stock check is inconclusive.",
+        "",
+        "No product status could be determined.",
+        "All product checks either failed or returned inconclusive results.",
+        "",
+        f"Previous run inconclusive: {'yes' if previous_inconclusive else 'no'}",
+        "",
+        "Configured products:",
+    ]
+
+    for product in products:
+        lines.append(f"- {product.get('name', 'unknown product')}: {product.get('url', '')}")
+
+    if errors:
+        lines.extend(["", "Errors:"])
+        for error in errors:
+            lines.append(f"- {error}")
+
+    return "\n".join(lines).strip()
+
+
+def send_inconclusive_email(
+    products: list[dict[str, Any]],
+    errors: list[str],
+    previous_inconclusive: bool,
+) -> None:
+    subject = f"{os.getenv('EMAIL_SUBJECT_PREFIX', 'Stock alert')}: stock check inconclusive"
+    body = build_inconclusive_email_body(
+        products=products,
+        errors=errors,
+        previous_inconclusive=previous_inconclusive,
+    )
+    send_email_message(subject=subject, body=body)
+
+
+def send_recovery_email() -> None:
+    subject = f"{os.getenv('EMAIL_SUBJECT_PREFIX', 'Stock alert')}: stock check recovered"
+    body = "Stock check recovered: at least one product status was determined in this run."
+    send_email_message(subject=subject, body=body)
+
+
 def send_email_message(subject: str, body: str) -> None:
     smtp_host = os.getenv("SMTP_HOST")
     smtp_port = int(os.getenv("SMTP_PORT", "587"))
@@ -391,6 +460,9 @@ def main() -> int:
     initial_statuses: list[InitialStatus] = []
     errors: list[str] = []
     determined_statuses = 0
+    previous_inconclusive = bool(
+        state_data.get(STATE_HEALTH_KEY, {}).get(STATE_INCONCLUSIVE_KEY, False)
+    )
 
     with requests.Session() as session:
         for product in products:
@@ -441,7 +513,26 @@ def main() -> int:
         if errors:
             for error in errors:
                 print(f"WARNING: {error}")
+
+        alert_on_inconclusive = os.getenv("ALERT_ON_INCONCLUSIVE", "true").lower() == "true"
+        alert_every_run = os.getenv("ALERT_ON_INCONCLUSIVE_EVERY_RUN", "false").lower() == "true"
+        if alert_on_inconclusive and (alert_every_run or not previous_inconclusive):
+            send_inconclusive_email(
+                products=products,
+                errors=errors,
+                previous_inconclusive=previous_inconclusive,
+            )
+
+        save_state(
+            next_state,
+            initialized=bool(state_data[STATE_INITIALIZED_KEY]),
+            last_run_inconclusive=True,
+        )
         return 0
+
+    alert_on_recovery = os.getenv("ALERT_ON_RECOVERY", "false").lower() == "true"
+    if previous_inconclusive and alert_on_recovery:
+        send_recovery_email()
 
     if is_first_run and initial_statuses:
         send_initial_email(initial_statuses)
@@ -449,7 +540,9 @@ def main() -> int:
         send_email(changes)
 
     if next_state != previous_state or is_first_run:
-        save_state(next_state, initialized=True)
+        save_state(next_state, initialized=True, last_run_inconclusive=False)
+    elif previous_inconclusive:
+        save_state(next_state, initialized=True, last_run_inconclusive=False)
 
     if errors:
         for error in errors:
