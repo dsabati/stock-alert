@@ -8,12 +8,6 @@
       "online": [
         {
           "is_available": false,
-          "key": "amazon en ligne|amazon.fr",
-          "name": "Amazon en ligne",
-          "website": "amazon.fr"
-        },
-        {
-          "is_available": false,
           "key": "brico en ligne|brico.be",
           "name": "Brico en ligne",
           "website": "brico.be"
