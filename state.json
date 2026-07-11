@@ -8,6 +8,12 @@
       "online": [
         {
           "is_available": false,
+          "key": "amazon en ligne|amazon.fr",
+          "name": "Amazon en ligne",
+          "website": "amazon.fr"
+        },
+        {
+          "is_available": false,
           "key": "brico en ligne|brico.be",
           "name": "Brico en ligne",
           "website": "brico.be"
@@ -20,15 +26,33 @@
         },
         {
           "is_available": false,
+          "key": "comet en ligne|comet.it",
+          "name": "Comet en ligne",
+          "website": "comet.it"
+        },
+        {
+          "is_available": false,
           "key": "darty en ligne|darty.com",
           "name": "Darty en ligne",
           "website": "darty.com"
         },
         {
           "is_available": false,
+          "key": "el corte ingles en ligne|elcorteingles.es",
+          "name": "El Corte Ingl\u00e9s en ligne",
+          "website": "elcorteingles.es"
+        },
+        {
+          "is_available": false,
           "key": "fnac en ligne|fnac.com",
           "name": "Fnac en ligne",
           "website": "fnac.com"
+        },
+        {
+          "is_available": false,
+          "key": "fust en ligne|fust.ch",
+          "name": "Fust en ligne",
+          "website": "fust.ch"
         },
         {
           "is_available": false,
@@ -44,6 +68,12 @@
         },
         {
           "is_available": false,
+          "key": "klimaworld en ligne|klimaworld.com",
+          "name": "Klimaworld en ligne",
+          "website": "klimaworld.com"
+        },
+        {
+          "is_available": false,
           "key": "leroy merlin en ligne|leroymerlin.fr",
           "name": "Leroy Merlin en ligne",
           "website": "leroymerlin.fr"
@@ -53,6 +83,30 @@
           "key": "manomano en ligne|manomano.fr",
           "name": "ManoMano en ligne",
           "website": "manomano.fr"
+        },
+        {
+          "is_available": false,
+          "key": "mediaworld en ligne|mediaworld.it",
+          "name": "MediaWorld en ligne",
+          "website": "mediaworld.it"
+        },
+        {
+          "is_available": false,
+          "key": "praxis en ligne|praxis.nl",
+          "name": "Praxis en ligne",
+          "website": "praxis.nl"
+        },
+        {
+          "is_available": false,
+          "key": "tepto en ligne|tepto.at",
+          "name": "Tepto en ligne",
+          "website": "tepto.at"
+        },
+        {
+          "is_available": false,
+          "key": "unieuro en ligne|unieuro.it",
+          "name": "Unieuro en ligne",
+          "website": "unieuro.it"
         }
       ],
       "physical": [
