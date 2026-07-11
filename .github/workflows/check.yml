@@ -16,6 +16,21 @@ jobs:
       - name: Check out repository
         uses: actions/checkout@v5
 
+      - name: Load state from state-update branch
+        run: |
+          STATE_BRANCH="state-update"
+          if ! git ls-remote --exit-code --heads origin "$STATE_BRANCH" >/dev/null 2>&1; then
+            echo "State branch $STATE_BRANCH does not exist yet; using repository state.json."
+            exit 0
+          fi
+
+          git fetch --no-tags --depth=1 origin "$STATE_BRANCH"
+          if git show "origin/$STATE_BRANCH:state.json" > state.json 2>/dev/null; then
+            echo "Loaded state.json from $STATE_BRANCH."
+          else
+            echo "State branch $STATE_BRANCH has no state.json yet; using repository state.json."
+          fi
+
       - name: Set up Python
         uses: actions/setup-python@v6
         with:
@@ -39,12 +54,39 @@ jobs:
             echo "::warning::Stock check failed (see logs above); continuing without failing workflow."
           fi
 
-      - name: Commit updated state
+      - name: Commit updated state to state-update branch
         run: |
           if ! git status --porcelain -- state.json | grep -q .; then
             echo "No state change to commit."
             exit 0
           fi
+
+          STATE_BRANCH="state-update"
+          STATE_FILE_TMP="$(mktemp)"
+          WORKTREE_DIR="$(mktemp -d)"
+          cleanup() {
+            git worktree remove --force "$WORKTREE_DIR" >/dev/null 2>&1 || true
+            rm -f "$STATE_FILE_TMP"
+            rmdir "$WORKTREE_DIR" >/dev/null 2>&1 || true
+          }
+          trap cleanup EXIT
+
+          cp state.json "$STATE_FILE_TMP"
+
+          if git ls-remote --exit-code --heads origin "$STATE_BRANCH" >/dev/null 2>&1; then
+            git worktree add "$WORKTREE_DIR" "origin/$STATE_BRANCH"
+          else
+            git worktree add -b "$STATE_BRANCH" "$WORKTREE_DIR" HEAD
+          fi
+
+          cp "$STATE_FILE_TMP" "$WORKTREE_DIR/state.json"
+          cd "$WORKTREE_DIR"
+
+          if ! git status --porcelain -- state.json | grep -q .; then
+            echo "No state change on $STATE_BRANCH to commit."
+            exit 0
+          fi
+
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add state.json
@@ -52,6 +94,6 @@ jobs:
             echo "::warning::Unable to create commit for state.json; continuing."
             exit 0
           fi
-          if ! git push; then
-            echo "::warning::Unable to push updated state; continuing."
+          if ! git push -u origin "$STATE_BRANCH"; then
+            echo "::warning::Unable to push updated state to $STATE_BRANCH; continuing."
           fi

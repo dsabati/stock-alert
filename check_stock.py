@@ -437,6 +437,44 @@ def build_state_entry(result: ProductResult) -> dict[str, Any]:
     }
 
 
+def _canonicalize_state_entries(
+    entries: list[dict[str, Any]],
+    location_field: str,
+) -> list[dict[str, Any]]:
+    canonical: list[dict[str, Any]] = []
+    for entry in entries:
+        if not isinstance(entry, dict):
+            continue
+        key = str(entry.get("key", ""))
+        if not key:
+            continue
+        canonical.append(
+            {
+                "key": key,
+                "name": str(entry.get("name", "")),
+                location_field: str(entry.get(location_field, "")),
+                "is_available": bool(entry.get("is_available", False)),
+            }
+        )
+    return sorted(canonical, key=lambda item: item["key"])
+
+
+def build_persisted_state_entry(entry: dict[str, Any]) -> dict[str, Any]:
+    return {
+        "retailer": str(entry.get("retailer", "")),
+        "url": str(entry.get("url", "")),
+        "online": _canonicalize_state_entries(
+            list(entry.get("online", [])),
+            "website",
+        ),
+        "physical": _canonicalize_state_entries(
+            list(entry.get("physical", [])),
+            "localisation",
+        ),
+        "summary_in_stock": entry.get("summary_in_stock"),
+    }
+
+
 def detect_restock_events(
     previous_entry: dict[str, Any] | None,
     current_entry: dict[str, Any],
@@ -745,7 +783,7 @@ def main() -> int:
                 )
             )
 
-            next_state[result.name] = current_entry
+            next_state[result.name] = build_persisted_state_entry(current_entry)
 
     if determined_statuses == 0:
         message = (
