@@ -56,11 +56,6 @@ jobs:
 
       - name: Commit updated state to state-update branch
         run: |
-          if ! git status --porcelain -- state.json | grep -q .; then
-            echo "No state change to commit."
-            exit 0
-          fi
-
           STATE_BRANCH="state-update"
           STATE_FILE_TMP="$(mktemp)"
           WORKTREE_DIR="$(mktemp -d)"
@@ -74,7 +69,8 @@ jobs:
           cp state.json "$STATE_FILE_TMP"
 
           if git ls-remote --exit-code --heads origin "$STATE_BRANCH" >/dev/null 2>&1; then
-            git worktree add "$WORKTREE_DIR" "origin/$STATE_BRANCH"
+            git fetch --no-tags --depth=1 origin "$STATE_BRANCH"
+            git worktree add -B "$STATE_BRANCH" "$WORKTREE_DIR" "origin/$STATE_BRANCH"
           else
             git worktree add -b "$STATE_BRANCH" "$WORKTREE_DIR" HEAD
           fi
@@ -94,6 +90,6 @@ jobs:
             echo "::warning::Unable to create commit for state.json; continuing."
             exit 0
           fi
-          if ! git push -u origin "$STATE_BRANCH"; then
+          if ! git push -u origin "$STATE_BRANCH:$STATE_BRANCH"; then
             echo "::warning::Unable to push updated state to $STATE_BRANCH; continuing."
           fi
