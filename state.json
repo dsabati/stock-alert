@@ -68,6 +68,12 @@
         },
         {
           "is_available": false,
+          "key": "klimaworld en ligne|klimaworld.com",
+          "name": "Klimaworld en ligne",
+          "website": "klimaworld.com"
+        },
+        {
+          "is_available": false,
           "key": "leroy merlin en ligne|leroymerlin.fr",
           "name": "Leroy Merlin en ligne",
           "website": "leroymerlin.fr"
