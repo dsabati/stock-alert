@@ -25,7 +25,7 @@
           "website": "castorama.fr"
         },
         {
-          "is_available": true,
+          "is_available": false,
           "key": "darty en ligne|darty.com",
           "name": "Darty en ligne",
           "website": "darty.com"
@@ -1030,7 +1030,7 @@
         }
       ],
       "retailer": "ClimRadar",
-      "summary_in_stock": true,
+      "summary_in_stock": false,
       "url": "https://climradar.fr/?cp=75018&r=200"
     }
   }
