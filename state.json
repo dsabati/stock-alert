@@ -130,12 +130,6 @@
         },
         {
           "is_available": false,
-          "key": "castorama henin-beaumont|62110 henin beaumont\u00b7 178 km",
-          "localisation": "62110 HENIN BEAUMONT\u00b7 178 km",
-          "name": "Castorama H\u00e9nin-Beaumont"
-        },
-        {
-          "is_available": false,
           "key": "castorama le mans|72021 le mans\u00b7 184 km",
           "localisation": "72021 LE MANS\u00b7 184 km",
           "name": "Castorama Le Mans"
@@ -187,12 +181,6 @@
           "key": "castorama place de clichy|75018 paris\u00b7 3,2 km",
           "localisation": "75018 PARIS\u00b7 3,2 km",
           "name": "Castorama Place de Clichy"
-        },
-        {
-          "is_available": false,
-          "key": "castorama reims thillois|51370 thillois\u00b7 126 km",
-          "localisation": "51370 Thillois\u00b7 126 km",
-          "name": "Castorama Reims Thillois"
         },
         {
           "is_available": false,
