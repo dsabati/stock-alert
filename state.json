@@ -8,12 +8,6 @@
       "online": [
         {
           "is_available": false,
-          "key": "brico en ligne|brico.be",
-          "name": "Brico en ligne",
-          "website": "brico.be"
-        },
-        {
-          "is_available": false,
           "key": "castorama en ligne|castorama.fr",
           "name": "Castorama en ligne",
           "website": "castorama.fr"
@@ -38,9 +32,9 @@
         },
         {
           "is_available": false,
-          "key": "hubo en ligne|hubo.be",
-          "name": "Hubo en ligne",
-          "website": "hubo.be"
+          "key": "klimabrands en ligne|klimabrands.dk",
+          "name": "Klimabrands en ligne",
+          "website": "klimabrands.dk"
         },
         {
           "is_available": false,
@@ -53,6 +47,12 @@
           "key": "manomano en ligne|manomano.fr",
           "name": "ManoMano en ligne",
           "website": "manomano.fr"
+        },
+        {
+          "is_available": false,
+          "key": "skousen en ligne|skousen.dk",
+          "name": "Skousen en ligne",
+          "website": "skousen.dk"
         }
       ],
       "physical": [
