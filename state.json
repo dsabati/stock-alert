@@ -316,12 +316,6 @@
         },
         {
           "is_available": false,
-          "key": "leroy merlin ivry-sur-seine|94200 ivry-sur-seine\u00b7 5,9 km",
-          "localisation": "94200 Ivry-Sur-Seine\u00b7 5,9 km",
-          "name": "Leroy Merlin Ivry-sur-Seine"
-        },
-        {
-          "is_available": false,
           "key": "leroy merlin jaux - compiegne|60880 jaux\u00b7 67 km",
           "localisation": "60880 Jaux\u00b7 67 km",
           "name": "Leroy Merlin Jaux - Compi\u00e8gne"
@@ -337,12 +331,6 @@
           "key": "leroy merlin la neuvillette - reims|51100 reims\u00b7 131 km",
           "localisation": "51100 Reims\u00b7 131 km",
           "name": "Leroy Merlin La Neuvillette - Reims"
-        },
-        {
-          "is_available": false,
-          "key": "leroy merlin la sentinelle - valenciennes - st quentin - cambrai|59174 la sentinelle\u00b7 185 km",
-          "localisation": "59174 La Sentinelle\u00b7 185 km",
-          "name": "Leroy Merlin La Sentinelle - Valenciennes - St Quentin - Cambrai"
         },
         {
           "is_available": false,
@@ -424,12 +412,6 @@
         },
         {
           "is_available": false,
-          "key": "leroy merlin paris-beaubourg|75001 paris\u00b7 0,5 km",
-          "localisation": "75001 Paris\u00b7 0,5 km",
-          "name": "Leroy Merlin Paris-Beaubourg"
-        },
-        {
-          "is_available": false,
           "key": "leroy merlin rosny-sous-bois|93110 rosny-sous-bois\u00b7 10 km",
           "localisation": "93110 Rosny-Sous-Bois\u00b7 10 km",
           "name": "Leroy Merlin Rosny-Sous-Bois"
@@ -478,8 +460,8 @@
         },
         {
           "is_available": false,
-          "key": "leroy merlin vernouillet - dreux|78540 vernouillet\u00b7 30 km",
-          "localisation": "78540 Vernouillet\u00b7 30 km",
+          "key": "leroy merlin vernouillet - dreux|28500 vernouillet\u00b7 74 km",
+          "localisation": "28500 Vernouillet\u00b7 74 km",
           "name": "Leroy Merlin Vernouillet - Dreux"
         },
         {
@@ -487,12 +469,6 @@
           "key": "leroy merlin verquin - bethune|62131 verquin\u00b7 184 km",
           "localisation": "62131 Verquin\u00b7 184 km",
           "name": "Leroy Merlin Verquin - B\u00e9thune"
-        },
-        {
-          "is_available": false,
-          "key": "leroy merlin vitry-sur-seine|94400 vitry-sur-seine\u00b7 8,5 km",
-          "localisation": "94400 Vitry-Sur-Seine\u00b7 8,5 km",
-          "name": "Leroy Merlin Vitry-sur-Seine"
         },
         {
           "is_available": false,
