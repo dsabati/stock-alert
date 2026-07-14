@@ -53,6 +53,12 @@
           "key": "skousen en ligne|skousen.dk",
           "name": "Skousen en ligne",
           "website": "skousen.dk"
+        },
+        {
+          "is_available": false,
+          "key": "whiteaway en ligne|whiteaway.com",
+          "name": "WhiteAway en ligne",
+          "website": "whiteaway.com"
         }
       ],
       "physical": [
