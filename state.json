@@ -262,6 +262,12 @@
         },
         {
           "is_available": false,
+          "key": "leroy merlin caen mondeville|14120 mondeville\u00b7 197 km",
+          "localisation": "14120 Mondeville\u00b7 197 km",
+          "name": "Leroy Merlin Caen Mondeville"
+        },
+        {
+          "is_available": false,
           "key": "leroy merlin chartres|28000 chartres\u00b7 77 km",
           "localisation": "28000 Chartres\u00b7 77 km",
           "name": "Leroy Merlin Chartres"
