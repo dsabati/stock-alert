@@ -8,6 +8,12 @@
       "online": [
         {
           "is_available": false,
+          "key": "castorama en ligne|castorama.fr",
+          "name": "Castorama en ligne",
+          "website": "castorama.fr"
+        },
+        {
+          "is_available": false,
           "key": "darty en ligne|darty.com",
           "name": "Darty en ligne",
           "website": "darty.com"
@@ -26,12 +32,6 @@
         },
         {
           "is_available": false,
-          "key": "klimabrands en ligne|klimabrands.dk",
-          "name": "Klimabrands en ligne",
-          "website": "klimabrands.dk"
-        },
-        {
-          "is_available": false,
           "key": "leroy merlin en ligne|leroymerlin.fr",
           "name": "Leroy Merlin en ligne",
           "website": "leroymerlin.fr"
@@ -41,18 +41,6 @@
           "key": "manomano en ligne|manomano.fr",
           "name": "ManoMano en ligne",
           "website": "manomano.fr"
-        },
-        {
-          "is_available": false,
-          "key": "skousen en ligne|skousen.dk",
-          "name": "Skousen en ligne",
-          "website": "skousen.dk"
-        },
-        {
-          "is_available": false,
-          "key": "whiteaway en ligne|whiteaway.com",
-          "name": "WhiteAway en ligne",
-          "website": "whiteaway.com"
         }
       ],
       "physical": [
