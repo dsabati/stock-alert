@@ -93,7 +93,7 @@
           "name": "Castorama Claye-Souilly"
         },
         {
-          "is_available": false,
+          "is_available": true,
           "key": "castorama coignieres|78310 coignieres\u00b7 33 km",
           "localisation": "78310 COIGNIERES\u00b7 33 km",
           "name": "Castorama Coigni\u00e8res"
@@ -604,7 +604,7 @@
         }
       ],
       "retailer": "ClimRadar",
-      "summary_in_stock": false,
+      "summary_in_stock": true,
       "url": "https://climradar.fr/?cp=75018&r=200"
     }
   }
