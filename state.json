@@ -147,7 +147,7 @@
           "name": "Castorama Nation"
         },
         {
-          "is_available": true,
+          "is_available": false,
           "key": "castorama olivet|45160 olivet\u00b7 118 km",
           "localisation": "45160 OLIVET\u00b7 118 km",
           "name": "Castorama Olivet"
@@ -490,7 +490,7 @@
         }
       ],
       "retailer": "ClimRadar",
-      "summary_in_stock": true,
+      "summary_in_stock": false,
       "url": "https://climradar.fr/?cp=75018&r=200"
     }
   }
