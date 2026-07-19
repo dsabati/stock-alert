@@ -1,11 +1,17 @@
 {
   "health": {
-    "last_run_inconclusive": true
+    "last_run_inconclusive": false
   },
   "initialized": true,
   "products": {
     "Midea PortaSplit - Paris 75018": {
       "online": [
+        {
+          "is_available": false,
+          "key": "castorama en ligne|castorama.fr",
+          "name": "Castorama en ligne",
+          "website": "castorama.fr"
+        },
         {
           "is_available": false,
           "key": "darty en ligne|darty.com",
