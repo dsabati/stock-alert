@@ -26,12 +26,6 @@
         },
         {
           "is_available": false,
-          "key": "fnac en ligne|fnac.com",
-          "name": "Fnac en ligne",
-          "website": "fnac.com"
-        },
-        {
-          "is_available": false,
           "key": "group sumi en ligne|groupsumi.es",
           "name": "Group Sumi en ligne",
           "website": "groupsumi.es"
