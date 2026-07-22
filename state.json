@@ -610,6 +610,12 @@
         },
         {
           "is_available": false,
+          "key": "connexion partenaire boulanger l'aigle|61300 l'aigle\u00b7 127 km",
+          "localisation": "61300 L'Aigle\u00b7 127 km",
+          "name": "Connexion Partenaire Boulanger L'Aigle"
+        },
+        {
+          "is_available": false,
           "key": "connexion partenaire boulanger mamers|72600 mamers\u00b7 156 km",
           "localisation": "72600 Mamers\u00b7 156 km",
           "name": "Connexion Partenaire Boulanger Mamers"
