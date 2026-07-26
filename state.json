@@ -460,9 +460,21 @@
         },
         {
           "is_available": false,
+          "key": "castorama barentin|76360 barentin\u00b7 125 km",
+          "localisation": "76360 BARENTIN\u00b7 125 km",
+          "name": "Castorama Barentin"
+        },
+        {
+          "is_available": false,
           "key": "castorama bir hakeim|75015 paris\u00b7 4,2 km",
           "localisation": "75015 Paris\u00b7 4,2 km",
           "name": "Castorama Bir Hakeim"
+        },
+        {
+          "is_available": false,
+          "key": "castorama caen herouville|14200 herouville st clair\u00b7 199 km",
+          "localisation": "14200 HEROUVILLE ST CLAIR\u00b7 199 km",
+          "name": "Castorama Caen H\u00e9rouville"
         },
         {
           "is_available": false,
@@ -517,6 +529,12 @@
           "key": "castorama henin-beaumont|62110 henin beaumont\u00b7 178 km",
           "localisation": "62110 HENIN BEAUMONT\u00b7 178 km",
           "name": "Castorama H\u00e9nin-Beaumont"
+        },
+        {
+          "is_available": false,
+          "key": "castorama le mans|72021 le mans\u00b7 184 km",
+          "localisation": "72021 LE MANS\u00b7 184 km",
+          "name": "Castorama Le Mans"
         },
         {
           "is_available": false,
