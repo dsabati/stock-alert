@@ -37,12 +37,6 @@
           "website": "groupsumi.es"
         },
         {
-          "is_available": true,
-          "key": "leroy merlin en ligne|leroymerlin.fr",
-          "name": "Leroy Merlin en ligne",
-          "website": "leroymerlin.fr"
-        },
-        {
           "is_available": false,
           "key": "manomano en ligne|manomano.fr",
           "name": "ManoMano en ligne",
@@ -922,7 +916,7 @@
         }
       ],
       "retailer": "ClimRadar",
-      "summary_in_stock": true,
+      "summary_in_stock": false,
       "url": "https://climradar.fr/?cp=75018&r=200"
     }
   }
