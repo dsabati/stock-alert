@@ -38,6 +38,12 @@
         },
         {
           "is_available": false,
+          "key": "leroy merlin en ligne|leroymerlin.fr",
+          "name": "Leroy Merlin en ligne",
+          "website": "leroymerlin.fr"
+        },
+        {
+          "is_available": false,
           "key": "manomano en ligne|manomano.fr",
           "name": "ManoMano en ligne",
           "website": "manomano.fr"
