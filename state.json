@@ -7,6 +7,12 @@
     "Midea PortaSplit - Paris 75018": {
       "online": [
         {
+          "is_available": true,
+          "key": "amazon en ligne|amazon.fr",
+          "name": "Amazon en ligne",
+          "website": "amazon.fr"
+        },
+        {
           "is_available": false,
           "key": "boulanger en ligne|boulanger.com",
           "name": "Boulanger en ligne",
@@ -17,6 +23,12 @@
           "key": "castorama en ligne|castorama.fr",
           "name": "Castorama en ligne",
           "website": "castorama.fr"
+        },
+        {
+          "is_available": false,
+          "key": "darty en ligne|darty.com",
+          "name": "Darty en ligne",
+          "website": "darty.com"
         },
         {
           "is_available": false,
@@ -490,7 +502,7 @@
         }
       ],
       "retailer": "ClimRadar",
-      "summary_in_stock": false,
+      "summary_in_stock": true,
       "url": "https://climradar.fr/?cp=75018&r=200"
     }
   }
