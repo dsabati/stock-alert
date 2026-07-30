@@ -1,6 +1,6 @@
 {
   "health": {
-    "last_run_inconclusive": true
+    "last_run_inconclusive": false
   },
   "initialized": true,
   "products": {
@@ -237,7 +237,7 @@
           "name": "Leroy Merlin Bonneuil-sur-Marne - Cr\u00e9teil"
         },
         {
-          "is_available": false,
+          "is_available": true,
           "key": "leroy merlin brie-comte-robert|77170 brie-comte-robert\u00b7 27 km",
           "localisation": "77170 Brie-Comte-Robert\u00b7 27 km",
           "name": "Leroy Merlin Brie-Comte-Robert"
@@ -496,7 +496,7 @@
         }
       ],
       "retailer": "ClimRadar",
-      "summary_in_stock": false,
+      "summary_in_stock": true,
       "url": "https://climradar.fr/?cp=75018&r=200"
     }
   }
