@@ -31,7 +31,7 @@
           "website": "darty.com"
         },
         {
-          "is_available": false,
+          "is_available": true,
           "key": "fnac en ligne|fnac.com",
           "name": "Fnac en ligne",
           "website": "fnac.com"
