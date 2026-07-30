@@ -41,6 +41,12 @@
           "key": "group sumi en ligne|groupsumi.es",
           "name": "Group Sumi en ligne",
           "website": "groupsumi.es"
+        },
+        {
+          "is_available": false,
+          "key": "leroy merlin en ligne|leroymerlin.fr",
+          "name": "Leroy Merlin en ligne",
+          "website": "leroymerlin.fr"
         }
       ],
       "physical": [
