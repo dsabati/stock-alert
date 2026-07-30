@@ -405,7 +405,7 @@
           "name": "Leroy Merlin Nanterre"
         },
         {
-          "is_available": true,
+          "is_available": false,
           "key": "leroy merlin osny|95520 osny\u00b7 31 km",
           "localisation": "95520 Osny\u00b7 31 km",
           "name": "Leroy Merlin Osny"
