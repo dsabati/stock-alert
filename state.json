@@ -267,7 +267,7 @@
           "name": "Leroy Merlin Chelles"
         },
         {
-          "is_available": false,
+          "is_available": true,
           "key": "leroy merlin collegien - marne-la-vallee|77090 collegien\u00b7 24 km",
           "localisation": "77090 Collegien\u00b7 24 km",
           "name": "Leroy Merlin Collegien - Marne-la-Vall\u00e9e"
@@ -381,7 +381,7 @@
           "name": "Leroy Merlin Merlimont- Le-Touquet-Paris-Plage"
         },
         {
-          "is_available": false,
+          "is_available": true,
           "key": "leroy merlin montigny-les-cormeilles|95370 montigny-les-cormeilles\u00b7 19 km",
           "localisation": "95370 Montigny-Les-Cormeilles\u00b7 19 km",
           "name": "Leroy Merlin Montigny-l\u00e8s-Cormeilles"
