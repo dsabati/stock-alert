@@ -25,13 +25,13 @@
           "website": "castorama.fr"
         },
         {
-          "is_available": false,
+          "is_available": true,
           "key": "darty en ligne|darty.com",
           "name": "Darty en ligne",
           "website": "darty.com"
         },
         {
-          "is_available": true,
+          "is_available": false,
           "key": "fnac en ligne|fnac.com",
           "name": "Fnac en ligne",
           "website": "fnac.com"
