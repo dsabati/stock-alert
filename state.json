@@ -195,7 +195,7 @@
           "name": "Castorama Villemomble"
         },
         {
-          "is_available": true,
+          "is_available": false,
           "key": "leroy merlin amiens|80000 amiens\u00b7 115 km",
           "localisation": "80000 Amiens\u00b7 115 km",
           "name": "Leroy Merlin Amiens"
