@@ -75,7 +75,7 @@
           "name": "Castorama Coigni\u00e8res"
         },
         {
-          "is_available": true,
+          "is_available": false,
           "key": "castorama cormeilles-en-parisis|95240 cormeilles-en-parisis\u00b7 15 km",
           "localisation": "95240 Cormeilles-en-Parisis\u00b7 15 km",
           "name": "Castorama Cormeilles-en-Parisis"
@@ -484,7 +484,7 @@
         }
       ],
       "retailer": "ClimRadar",
-      "summary_in_stock": true,
+      "summary_in_stock": false,
       "url": "https://climradar.fr/?cp=75018&r=200"
     }
   }
