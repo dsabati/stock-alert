@@ -19,7 +19,7 @@
           "website": "castorama.fr"
         },
         {
-          "is_available": false,
+          "is_available": true,
           "key": "darty en ligne|darty.com",
           "name": "Darty en ligne",
           "website": "darty.com"
