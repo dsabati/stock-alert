@@ -25,7 +25,7 @@
           "website": "darty.com"
         },
         {
-          "is_available": true,
+          "is_available": false,
           "key": "fnac en ligne|fnac.com",
           "name": "Fnac en ligne",
           "website": "fnac.com"
@@ -484,7 +484,7 @@
         }
       ],
       "retailer": "ClimRadar",
-      "summary_in_stock": true,
+      "summary_in_stock": false,
       "url": "https://climradar.fr/?cp=75018&r=200"
     }
   }
