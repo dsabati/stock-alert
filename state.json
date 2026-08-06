@@ -250,6 +250,12 @@
         },
         {
           "is_available": false,
+          "key": "leroy merlin chartres|28000 chartres\u00b7 77 km",
+          "localisation": "28000 Chartres\u00b7 77 km",
+          "name": "Leroy Merlin Chartres"
+        },
+        {
+          "is_available": false,
           "key": "leroy merlin chelles|77500 chelles\u00b7 18 km",
           "localisation": "77500 Chelles\u00b7 18 km",
           "name": "Leroy Merlin Chelles"
@@ -346,6 +352,12 @@
         },
         {
           "is_available": false,
+          "key": "leroy merlin massy|91300 massy\u00b7 16 km",
+          "localisation": "91300 Massy\u00b7 16 km",
+          "name": "Leroy Merlin Massy"
+        },
+        {
+          "is_available": false,
           "key": "leroy merlin meaux|77124 chauconin neufmontiers\u00b7 38 km",
           "localisation": "77124 Chauconin Neufmontiers\u00b7 38 km",
           "name": "Leroy Merlin Meaux"
@@ -424,8 +436,8 @@
         },
         {
           "is_available": false,
-          "key": "leroy merlin saint-doulchard - bourges|18230 saint-doulchard\u00b7 195 km",
-          "localisation": "18230 Saint-Doulchard\u00b7 195 km",
+          "key": "leroy merlin saint-doulchard - bourges|18230 saint-doulchard\u00b7 194 km",
+          "localisation": "18230 Saint-Doulchard\u00b7 194 km",
           "name": "Leroy Merlin Saint-Doulchard - Bourges"
         },
         {
@@ -433,6 +445,12 @@
           "key": "leroy merlin saint-ouen - paris|93400 saint-ouen\u00b7 6 km",
           "localisation": "93400 Saint-Ouen\u00b7 6 km",
           "name": "Leroy Merlin Saint-Ouen - Paris"
+        },
+        {
+          "is_available": false,
+          "key": "leroy merlin sainte-genevieve-des-bois - la croix blanche|45230 ste genevieve des bois\u00b7 120 km",
+          "localisation": "45230 Ste Genevi\u00e8ve Des Bois\u00b7 120 km",
+          "name": "Leroy Merlin Sainte-Genevi\u00e8ve-des-Bois - La Croix Blanche"
         },
         {
           "is_available": false,
