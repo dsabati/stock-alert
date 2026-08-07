@@ -616,12 +616,6 @@
         },
         {
           "is_available": false,
-          "key": "le comptoir d'arras|62000 arras\u00b7 163 km",
-          "localisation": "62000 Arras\u00b7 163 km",
-          "name": "Le Comptoir d'Arras"
-        },
-        {
-          "is_available": false,
           "key": "leroy merlin amiens|80000 amiens\u00b7 115 km",
           "localisation": "80000 Amiens\u00b7 115 km",
           "name": "Leroy Merlin Amiens"
