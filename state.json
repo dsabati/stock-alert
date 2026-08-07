@@ -309,7 +309,7 @@
           "name": "Leroy Merlin Ivry-sur-Seine"
         },
         {
-          "is_available": false,
+          "is_available": true,
           "key": "leroy merlin jaux - compiegne|60880 jaux\u00b7 67 km",
           "localisation": "60880 Jaux\u00b7 67 km",
           "name": "Leroy Merlin Jaux - Compi\u00e8gne"
@@ -490,7 +490,7 @@
         }
       ],
       "retailer": "ClimRadar",
-      "summary_in_stock": false,
+      "summary_in_stock": true,
       "url": "https://climradar.fr/?cp=75018&r=200"
     }
   }
