@@ -7,7 +7,7 @@
     "Midea PortaSplit - Paris 75018": {
       "online": [
         {
-          "is_available": false,
+          "is_available": true,
           "key": "boulanger en ligne|boulanger.com",
           "name": "Boulanger en ligne",
           "website": "boulanger.com"
@@ -735,7 +735,7 @@
           "name": "Leroy Merlin Ivry-sur-Seine"
         },
         {
-          "is_available": true,
+          "is_available": false,
           "key": "leroy merlin jaux - compiegne|60880 jaux\u00b7 67 km",
           "localisation": "60880 Jaux\u00b7 67 km",
           "name": "Leroy Merlin Jaux - Compi\u00e8gne"
