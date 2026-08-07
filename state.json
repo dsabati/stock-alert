@@ -8,6 +8,12 @@
       "online": [
         {
           "is_available": true,
+          "key": "amazon en ligne|amazon.fr",
+          "name": "Amazon en ligne",
+          "website": "amazon.fr"
+        },
+        {
+          "is_available": true,
           "key": "boulanger en ligne|boulanger.com",
           "name": "Boulanger en ligne",
           "website": "boulanger.com"
