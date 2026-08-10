@@ -285,7 +285,7 @@
           "name": "Leroy Merlin Gonesse"
         },
         {
-          "is_available": true,
+          "is_available": false,
           "key": "leroy merlin hautmont - maubeuge|59330 hautmont\u00b7 191 km",
           "localisation": "59330 Hautmont\u00b7 191 km",
           "name": "Leroy Merlin Hautmont - Maubeuge"
@@ -490,7 +490,7 @@
         }
       ],
       "retailer": "ClimRadar",
-      "summary_in_stock": true,
+      "summary_in_stock": false,
       "url": "https://climradar.fr/?cp=75018&r=200"
     }
   }
