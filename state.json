@@ -291,7 +291,7 @@
           "name": "Leroy Merlin Gonesse"
         },
         {
-          "is_available": false,
+          "is_available": true,
           "key": "leroy merlin hautmont - maubeuge|59330 hautmont\u00b7 191 km",
           "localisation": "59330 Hautmont\u00b7 191 km",
           "name": "Leroy Merlin Hautmont - Maubeuge"
