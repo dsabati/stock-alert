@@ -453,7 +453,7 @@
           "name": "Leroy Merlin Sainte-Genevi\u00e8ve-des-Bois - La Croix Blanche"
         },
         {
-          "is_available": false,
+          "is_available": true,
           "key": "leroy merlin tourville-la-riviere - rouen|76410 tourville-la-riviere\u00b7 105 km",
           "localisation": "76410 Tourville-La-Rivi\u00e8re\u00b7 105 km",
           "name": "Leroy Merlin Tourville-la-Rivi\u00e8re - Rouen"
@@ -490,7 +490,7 @@
         }
       ],
       "retailer": "ClimRadar",
-      "summary_in_stock": false,
+      "summary_in_stock": true,
       "url": "https://climradar.fr/?cp=75018&r=200"
     }
   }
