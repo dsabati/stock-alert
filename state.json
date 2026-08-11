@@ -13,7 +13,7 @@
           "website": "amazon.fr"
         },
         {
-          "is_available": true,
+          "is_available": false,
           "key": "boulanger en ligne|boulanger.com",
           "name": "Boulanger en ligne",
           "website": "boulanger.com"
