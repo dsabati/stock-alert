@@ -267,7 +267,7 @@
           "name": "Leroy Merlin Chelles"
         },
         {
-          "is_available": true,
+          "is_available": false,
           "key": "leroy merlin collegien - marne-la-vallee|77090 collegien\u00b7 24 km",
           "localisation": "77090 Collegien\u00b7 24 km",
           "name": "Leroy Merlin Collegien - Marne-la-Vall\u00e9e"
@@ -357,7 +357,7 @@
           "name": "Leroy Merlin Longueau - Amiens Sud"
         },
         {
-          "is_available": false,
+          "is_available": true,
           "key": "leroy merlin massy|91300 massy\u00b7 16 km",
           "localisation": "91300 Massy\u00b7 16 km",
           "name": "Leroy Merlin Massy"
