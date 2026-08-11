@@ -357,7 +357,7 @@
           "name": "Leroy Merlin Longueau - Amiens Sud"
         },
         {
-          "is_available": true,
+          "is_available": false,
           "key": "leroy merlin massy|91300 massy\u00b7 16 km",
           "localisation": "91300 Massy\u00b7 16 km",
           "name": "Leroy Merlin Massy"
