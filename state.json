@@ -7,6 +7,12 @@
     "Midea PortaSplit - Paris 75018": {
       "online": [
         {
+          "is_available": true,
+          "key": "amazon en ligne|amazon.fr",
+          "name": "Amazon en ligne",
+          "website": "amazon.fr"
+        },
+        {
           "is_available": false,
           "key": "boulanger en ligne|boulanger.com",
           "name": "Boulanger en ligne",
@@ -237,7 +243,7 @@
           "name": "Leroy Merlin Bonneuil-sur-Marne - Cr\u00e9teil"
         },
         {
-          "is_available": true,
+          "is_available": false,
           "key": "leroy merlin brie-comte-robert|77170 brie-comte-robert\u00b7 27 km",
           "localisation": "77170 Brie-Comte-Robert\u00b7 27 km",
           "name": "Leroy Merlin Brie-Comte-Robert"
@@ -255,7 +261,7 @@
           "name": "Leroy Merlin Caen Mondeville"
         },
         {
-          "is_available": false,
+          "is_available": true,
           "key": "leroy merlin chartres|28000 chartres\u00b7 77 km",
           "localisation": "28000 Chartres\u00b7 77 km",
           "name": "Leroy Merlin Chartres"
@@ -267,7 +273,7 @@
           "name": "Leroy Merlin Chelles"
         },
         {
-          "is_available": false,
+          "is_available": true,
           "key": "leroy merlin collegien - marne-la-vallee|77090 collegien\u00b7 24 km",
           "localisation": "77090 Collegien\u00b7 24 km",
           "name": "Leroy Merlin Collegien - Marne-la-Vall\u00e9e"
@@ -453,13 +459,13 @@
           "name": "Leroy Merlin Saint-Ouen - Paris"
         },
         {
-          "is_available": true,
+          "is_available": false,
           "key": "leroy merlin sainte-genevieve-des-bois - la croix blanche|45230 ste genevieve des bois\u00b7 120 km",
           "localisation": "45230 Ste Genevi\u00e8ve Des Bois\u00b7 120 km",
           "name": "Leroy Merlin Sainte-Genevi\u00e8ve-des-Bois - La Croix Blanche"
         },
         {
-          "is_available": true,
+          "is_available": false,
           "key": "leroy merlin tourville-la-riviere - rouen|76410 tourville-la-riviere\u00b7 105 km",
           "localisation": "76410 Tourville-La-Rivi\u00e8re\u00b7 105 km",
           "name": "Leroy Merlin Tourville-la-Rivi\u00e8re - Rouen"
