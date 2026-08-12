@@ -363,7 +363,7 @@
           "name": "Leroy Merlin Merlimont- Le-Touquet-Paris-Plage"
         },
         {
-          "is_available": true,
+          "is_available": false,
           "key": "leroy merlin montigny-les-cormeilles|95370 montigny-les-cormeilles\u00b7 19 km",
           "localisation": "95370 Montigny-Les-Cormeilles\u00b7 19 km",
           "name": "Leroy Merlin Montigny-l\u00e8s-Cormeilles"
