@@ -147,7 +147,7 @@
           "name": "Castorama Ormesson"
         },
         {
-          "is_available": false,
+          "is_available": true,
           "key": "castorama pierrelaye|95480 pierrelaye\u00b7 22 km",
           "localisation": "95480 Pierrelaye\u00b7 22 km",
           "name": "Castorama Pierrelaye"
