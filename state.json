@@ -321,7 +321,7 @@
           "name": "Leroy Merlin La Sentinelle - Valenciennes - St Quentin - Cambrai"
         },
         {
-          "is_available": false,
+          "is_available": true,
           "key": "leroy merlin livry-gargan|93190 livry gargan\u00b7 15 km",
           "localisation": "93190 Livry Gargan\u00b7 15 km",
           "name": "Leroy Merlin Livry-Gargan"
@@ -363,7 +363,7 @@
           "name": "Leroy Merlin Merlimont- Le-Touquet-Paris-Plage"
         },
         {
-          "is_available": false,
+          "is_available": true,
           "key": "leroy merlin montigny-les-cormeilles|95370 montigny-les-cormeilles\u00b7 19 km",
           "localisation": "95370 Montigny-Les-Cormeilles\u00b7 19 km",
           "name": "Leroy Merlin Montigny-l\u00e8s-Cormeilles"
@@ -447,7 +447,7 @@
           "name": "Leroy Merlin Tourville-la-Rivi\u00e8re - Rouen"
         },
         {
-          "is_available": false,
+          "is_available": true,
           "key": "leroy merlin vendin-le-vieil - lens|62880 vendin-le-vieil\u00b7 183 km",
           "localisation": "62880 Vendin-Le-Vieil\u00b7 183 km",
           "name": "Leroy Merlin Vendin-le-Vieil - Lens"
