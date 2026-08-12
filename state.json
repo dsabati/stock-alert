@@ -399,7 +399,7 @@
           "name": "Leroy Merlin Osny"
         },
         {
-          "is_available": false,
+          "is_available": true,
           "key": "leroy merlin paris-beaubourg|75001 paris\u00b7 0,5 km",
           "localisation": "75001 Paris\u00b7 0,5 km",
           "name": "Leroy Merlin Paris-Beaubourg"
@@ -447,7 +447,7 @@
           "name": "Leroy Merlin Tourville-la-Rivi\u00e8re - Rouen"
         },
         {
-          "is_available": true,
+          "is_available": false,
           "key": "leroy merlin vendin-le-vieil - lens|62880 vendin-le-vieil\u00b7 183 km",
           "localisation": "62880 Vendin-Le-Vieil\u00b7 183 km",
           "name": "Leroy Merlin Vendin-le-Vieil - Lens"
