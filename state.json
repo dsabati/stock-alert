@@ -237,7 +237,7 @@
           "name": "Leroy Merlin Caen Mondeville"
         },
         {
-          "is_available": true,
+          "is_available": false,
           "key": "leroy merlin chartres|28000 chartres\u00b7 77 km",
           "localisation": "28000 Chartres\u00b7 77 km",
           "name": "Leroy Merlin Chartres"
@@ -321,7 +321,7 @@
           "name": "Leroy Merlin La Sentinelle - Valenciennes - St Quentin - Cambrai"
         },
         {
-          "is_available": true,
+          "is_available": false,
           "key": "leroy merlin livry-gargan|93190 livry gargan\u00b7 15 km",
           "localisation": "93190 Livry Gargan\u00b7 15 km",
           "name": "Leroy Merlin Livry-Gargan"
