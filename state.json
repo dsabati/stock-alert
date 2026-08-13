@@ -831,7 +831,7 @@
           "name": "Leroy Merlin Rosny-Sous-Bois"
         },
         {
-          "is_available": false,
+          "is_available": true,
           "key": "leroy merlin rueil-malmaison|92500 rueil malmaison\u00b7 12 km",
           "localisation": "92500 Rueil Malmaison\u00b7 12 km",
           "name": "Leroy Merlin Rueil-Malmaison"
@@ -898,7 +898,7 @@
         }
       ],
       "retailer": "ClimRadar",
-      "summary_in_stock": false,
+      "summary_in_stock": true,
       "url": "https://climradar.fr/?cp=75018&r=200"
     }
   }
