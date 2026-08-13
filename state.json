@@ -687,7 +687,7 @@
           "name": "Leroy Merlin Gennevilliers"
         },
         {
-          "is_available": true,
+          "is_available": false,
           "key": "leroy merlin gonesse|95500 gonesse\u00b7 17 km",
           "localisation": "95500 Gonesse\u00b7 17 km",
           "name": "Leroy Merlin Gonesse"
@@ -819,7 +819,7 @@
           "name": "Leroy Merlin Osny"
         },
         {
-          "is_available": true,
+          "is_available": false,
           "key": "leroy merlin paris-beaubourg|75001 paris\u00b7 0,5 km",
           "localisation": "75001 Paris\u00b7 0,5 km",
           "name": "Leroy Merlin Paris-Beaubourg"
@@ -898,7 +898,7 @@
         }
       ],
       "retailer": "ClimRadar",
-      "summary_in_stock": true,
+      "summary_in_stock": false,
       "url": "https://climradar.fr/?cp=75018&r=200"
     }
   }
