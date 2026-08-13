@@ -267,7 +267,7 @@
           "name": "Leroy Merlin Gennevilliers"
         },
         {
-          "is_available": false,
+          "is_available": true,
           "key": "leroy merlin gonesse|95500 gonesse\u00b7 17 km",
           "localisation": "95500 Gonesse\u00b7 17 km",
           "name": "Leroy Merlin Gonesse"
