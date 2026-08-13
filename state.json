@@ -687,7 +687,7 @@
           "name": "Leroy Merlin Gennevilliers"
         },
         {
-          "is_available": false,
+          "is_available": true,
           "key": "leroy merlin gonesse|95500 gonesse\u00b7 17 km",
           "localisation": "95500 Gonesse\u00b7 17 km",
           "name": "Leroy Merlin Gonesse"
@@ -807,7 +807,7 @@
           "name": "Leroy Merlin Mulsanne - Le Mans"
         },
         {
-          "is_available": false,
+          "is_available": true,
           "key": "leroy merlin nanterre|92000 nanterre\u00b7 11 km",
           "localisation": "92000 Nanterre\u00b7 11 km",
           "name": "Leroy Merlin Nanterre"
@@ -831,7 +831,7 @@
           "name": "Leroy Merlin Rosny-Sous-Bois"
         },
         {
-          "is_available": true,
+          "is_available": false,
           "key": "leroy merlin rueil-malmaison|92500 rueil malmaison\u00b7 12 km",
           "localisation": "92500 Rueil Malmaison\u00b7 12 km",
           "name": "Leroy Merlin Rueil-Malmaison"
