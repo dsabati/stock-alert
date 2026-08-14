@@ -807,7 +807,7 @@
           "name": "Leroy Merlin Mulsanne - Le Mans"
         },
         {
-          "is_available": true,
+          "is_available": false,
           "key": "leroy merlin nanterre|92000 nanterre\u00b7 11 km",
           "localisation": "92000 Nanterre\u00b7 11 km",
           "name": "Leroy Merlin Nanterre"
@@ -819,7 +819,7 @@
           "name": "Leroy Merlin Osny"
         },
         {
-          "is_available": true,
+          "is_available": false,
           "key": "leroy merlin paris-beaubourg|75001 paris\u00b7 0,5 km",
           "localisation": "75001 Paris\u00b7 0,5 km",
           "name": "Leroy Merlin Paris-Beaubourg"
