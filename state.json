@@ -663,7 +663,7 @@
           "name": "Leroy Merlin Chartres"
         },
         {
-          "is_available": false,
+          "is_available": true,
           "key": "leroy merlin chelles|77500 chelles\u00b7 18 km",
           "localisation": "77500 Chelles\u00b7 18 km",
           "name": "Leroy Merlin Chelles"
@@ -819,7 +819,7 @@
           "name": "Leroy Merlin Osny"
         },
         {
-          "is_available": false,
+          "is_available": true,
           "key": "leroy merlin paris-beaubourg|75001 paris\u00b7 0,5 km",
           "localisation": "75001 Paris\u00b7 0,5 km",
           "name": "Leroy Merlin Paris-Beaubourg"
