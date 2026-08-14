@@ -430,6 +430,156 @@
         },
         {
           "is_available": false,
+          "key": "castorama barentin|76360 barentin\u00b7 125 km",
+          "localisation": "76360 BARENTIN\u00b7 125 km",
+          "name": "Castorama Barentin"
+        },
+        {
+          "is_available": false,
+          "key": "castorama bir hakeim|75015 paris\u00b7 4,2 km",
+          "localisation": "75015 Paris\u00b7 4,2 km",
+          "name": "Castorama Bir Hakeim"
+        },
+        {
+          "is_available": false,
+          "key": "castorama caen herouville|14200 herouville st clair\u00b7 199 km",
+          "localisation": "14200 HEROUVILLE ST CLAIR\u00b7 199 km",
+          "name": "Castorama Caen H\u00e9rouville"
+        },
+        {
+          "is_available": false,
+          "key": "castorama chambourcy|78240 chambourcy\u00b7 23 km",
+          "localisation": "78240 CHAMBOURCY\u00b7 23 km",
+          "name": "Castorama Chambourcy"
+        },
+        {
+          "is_available": false,
+          "key": "castorama claye-souilly|77410 claye souilly\u00b7 25 km",
+          "localisation": "77410 CLAYE SOUILLY\u00b7 25 km",
+          "name": "Castorama Claye-Souilly"
+        },
+        {
+          "is_available": false,
+          "key": "castorama coignieres|78310 coignieres\u00b7 33 km",
+          "localisation": "78310 COIGNIERES\u00b7 33 km",
+          "name": "Castorama Coigni\u00e8res"
+        },
+        {
+          "is_available": false,
+          "key": "castorama cormeilles-en-parisis|95240 cormeilles-en-parisis\u00b7 15 km",
+          "localisation": "95240 Cormeilles-en-Parisis\u00b7 15 km",
+          "name": "Castorama Cormeilles-en-Parisis"
+        },
+        {
+          "is_available": false,
+          "key": "castorama creil st maximin|60740 st maximin\u00b7 43 km",
+          "localisation": "60740 St MAXIMIN\u00b7 43 km",
+          "name": "Castorama Creil St Maximin"
+        },
+        {
+          "is_available": false,
+          "key": "castorama creteil|94034 creteil\u00b7 11 km",
+          "localisation": "94034 Cr\u00e9teil\u00b7 11 km",
+          "name": "Castorama Cr\u00e9teil"
+        },
+        {
+          "is_available": false,
+          "key": "castorama fresnes|94260 fresnes\u00b7 12 km",
+          "localisation": "94260 FRESNES\u00b7 12 km",
+          "name": "Castorama Fresnes"
+        },
+        {
+          "is_available": false,
+          "key": "castorama gonesse|95700 roissy charles de gaulle\u00b7 17 km",
+          "localisation": "95700 ROISSY CHARLES DE GAULLE\u00b7 17 km",
+          "name": "Castorama Gonesse"
+        },
+        {
+          "is_available": false,
+          "key": "castorama henin-beaumont|62110 henin beaumont\u00b7 178 km",
+          "localisation": "62110 HENIN BEAUMONT\u00b7 178 km",
+          "name": "Castorama H\u00e9nin-Beaumont"
+        },
+        {
+          "is_available": false,
+          "key": "castorama le mans|72021 le mans\u00b7 184 km",
+          "localisation": "72021 LE MANS\u00b7 184 km",
+          "name": "Castorama Le Mans"
+        },
+        {
+          "is_available": false,
+          "key": "castorama les ulis|91940 les ulis\u00b7 23 km",
+          "localisation": "91940 LES ULIS\u00b7 23 km",
+          "name": "Castorama Les Ulis"
+        },
+        {
+          "is_available": false,
+          "key": "castorama les-clayes-sous-bois|78340 les-clayes-sous-bois\u00b7 28 km",
+          "localisation": "78340 LES-CLAYES-SOUS-BOIS\u00b7 28 km",
+          "name": "Castorama Les-Clayes-Sous-Bois"
+        },
+        {
+          "is_available": false,
+          "key": "castorama melun|77000 melun\u00b7 40 km",
+          "localisation": "77000 MELUN\u00b7 40 km",
+          "name": "Castorama Melun"
+        },
+        {
+          "is_available": false,
+          "key": "castorama nation|75020 paris\u00b7 4 km",
+          "localisation": "75020 PARIS\u00b7 4 km",
+          "name": "Castorama Nation"
+        },
+        {
+          "is_available": false,
+          "key": "castorama olivet|45160 olivet\u00b7 118 km",
+          "localisation": "45160 OLIVET\u00b7 118 km",
+          "name": "Castorama Olivet"
+        },
+        {
+          "is_available": false,
+          "key": "castorama ormesson|94430 chennevieres sur marne\u00b7 17 km",
+          "localisation": "94430 CHENNEVIERES SUR MARNE\u00b7 17 km",
+          "name": "Castorama Ormesson"
+        },
+        {
+          "is_available": false,
+          "key": "castorama pierrelaye|95480 pierrelaye\u00b7 22 km",
+          "localisation": "95480 Pierrelaye\u00b7 22 km",
+          "name": "Castorama Pierrelaye"
+        },
+        {
+          "is_available": false,
+          "key": "castorama place de clichy|75018 paris\u00b7 3,2 km",
+          "localisation": "75018 PARIS\u00b7 3,2 km",
+          "name": "Castorama Place de Clichy"
+        },
+        {
+          "is_available": false,
+          "key": "castorama reims thillois|51370 thillois\u00b7 126 km",
+          "localisation": "51370 Thillois\u00b7 126 km",
+          "name": "Castorama Reims Thillois"
+        },
+        {
+          "is_available": false,
+          "key": "castorama velizy|78140 za velizy-villacoublay\u00b7 13 km",
+          "localisation": "78140 ZA VELIZY-VILLACOUBLAY\u00b7 13 km",
+          "name": "Castorama V\u00e9lizy"
+        },
+        {
+          "is_available": false,
+          "key": "castorama villabe|91100 villabe\u00b7 31 km",
+          "localisation": "91100 Villab\u00e9\u00b7 31 km",
+          "name": "Castorama Villab\u00e9"
+        },
+        {
+          "is_available": false,
+          "key": "castorama villemomble|93250 villemomble\u00b7 12 km",
+          "localisation": "93250 VILLEMOMBLE\u00b7 12 km",
+          "name": "Castorama Villemomble"
+        },
+        {
+          "is_available": false,
           "key": "connexion partenaire boulanger l'aigle|61300 l'aigle\u00b7 127 km",
           "localisation": "61300 L'Aigle\u00b7 127 km",
           "name": "Connexion Partenaire Boulanger L'Aigle"
