@@ -663,7 +663,7 @@
           "name": "Leroy Merlin Chartres"
         },
         {
-          "is_available": true,
+          "is_available": false,
           "key": "leroy merlin chelles|77500 chelles\u00b7 18 km",
           "localisation": "77500 Chelles\u00b7 18 km",
           "name": "Leroy Merlin Chelles"
@@ -687,7 +687,7 @@
           "name": "Leroy Merlin Gennevilliers"
         },
         {
-          "is_available": true,
+          "is_available": false,
           "key": "leroy merlin gonesse|95500 gonesse\u00b7 17 km",
           "localisation": "95500 Gonesse\u00b7 17 km",
           "name": "Leroy Merlin Gonesse"
@@ -723,7 +723,7 @@
           "name": "Leroy Merlin Jaux - Compi\u00e8gne"
         },
         {
-          "is_available": false,
+          "is_available": true,
           "key": "leroy merlin la madeleine - paris 8|75001 paris\u00b7 0,5 km",
           "localisation": "75001 Paris\u00b7 0,5 km",
           "name": "Leroy Merlin La Madeleine - Paris 8"
