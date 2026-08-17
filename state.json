@@ -304,12 +304,6 @@
         },
         {
           "is_available": false,
-          "key": "boulanger paris montmartre|75018 paris\u00b7 2,7 km",
-          "localisation": "75018 Paris\u00b7 2,7 km",
-          "name": "Boulanger Paris Montmartre"
-        },
-        {
-          "is_available": false,
           "key": "boulanger paris montparnasse|75006 paris\u00b7 2,1 km",
           "localisation": "75006 Paris\u00b7 2,1 km",
           "name": "Boulanger Paris Montparnasse"
