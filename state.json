@@ -394,12 +394,6 @@
         },
         {
           "is_available": false,
-          "key": "boulanger troyes|10410 saint parres aux tertres\u00b7 145 km",
-          "localisation": "10410 Saint Parres Aux Tertres\u00b7 145 km",
-          "name": "Boulanger Troyes"
-        },
-        {
-          "is_available": false,
           "key": "boulanger valenciennes - petite foret|59494 petite foret\u00b7 188 km",
           "localisation": "59494 Petite Foret\u00b7 188 km",
           "name": "Boulanger Valenciennes - Petite Foret"
