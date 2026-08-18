@@ -699,7 +699,7 @@
           "name": "Leroy Merlin Hautmont - Maubeuge"
         },
         {
-          "is_available": true,
+          "is_available": false,
           "key": "leroy merlin ingre - orleans|45140 ingre\u00b7 111 km",
           "localisation": "45140 Ingr\u00e9\u00b7 111 km",
           "name": "Leroy Merlin Ingr\u00e9 - Orl\u00e9ans"
@@ -898,7 +898,7 @@
         }
       ],
       "retailer": "ClimRadar",
-      "summary_in_stock": true,
+      "summary_in_stock": false,
       "url": "https://climradar.fr/?cp=75018&r=200"
     }
   }
