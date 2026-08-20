@@ -669,7 +669,7 @@
           "name": "Leroy Merlin Chelles"
         },
         {
-          "is_available": true,
+          "is_available": false,
           "key": "leroy merlin collegien - marne-la-vallee|77090 collegien\u00b7 24 km",
           "localisation": "77090 Collegien\u00b7 24 km",
           "name": "Leroy Merlin Collegien - Marne-la-Vall\u00e9e"
@@ -855,7 +855,7 @@
           "name": "Leroy Merlin Saint-Ouen - Paris"
         },
         {
-          "is_available": false,
+          "is_available": true,
           "key": "leroy merlin sainte-genevieve-des-bois - la croix blanche|45230 ste genevieve des bois\u00b7 120 km",
           "localisation": "45230 Ste Genevi\u00e8ve Des Bois\u00b7 120 km",
           "name": "Leroy Merlin Sainte-Genevi\u00e8ve-des-Bois - La Croix Blanche"
